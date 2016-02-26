@@ -1,76 +1,82 @@
 ---
-title: Linear
 layout: default
 ---
-<!-- Featured -->
-<div id="featured">
-	<div class="container">
-		<header>
-			<h2>Welcome to Linear</h2>
-		</header>
-		<p>This is <strong>Linear</strong>, a responsive HTML5 site template freebie by <a href="http://templated.co">TEMPLATED</a>. Released for free under the <a href="http://templated.co/license">Creative Commons Attribution</a> license, so use it for whatever (personal or commercial) &ndash; just give us credit! Check out more of our stuff at <a href="http://templated.co">our site</a> or follow us on <a href="http://twitter.com/templatedco">Twitter</a>.</p>
-		<hr />
-		<div class="row">
-			<section class="4u">
-				<span class="pennant"><span class="fa fa-briefcase"></span></span>
-				<h3>Maecenas luctus lectus</h3>
-				<p>Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
-				<a href="#" class="button button-style1">Read More</a>
-			</section>
-			<section class="4u">
-				<span class="pennant"><span class="fa fa-lock"></span></span>
-				<h3>Maecenas luctus lectus</h3>
-				<p>Donec ornare neque ac sem. Mauris aliquet. Aliquam sem leo, vulputate sed, convallis at, ultricies quis, justo. Donec magna.</p>
-				<a href="#" class="button button-style1">Read More</a>
-			</section>
-			<section class="4u">
-				<span class="pennant"><span class="fa fa-globe"></span></span>
-				<h3>Maecenas luctus lectus</h3>
-				<p>Curabitur sit amet nulla. Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat, nulla. Sed ac leo.</p>
-				<a href="#" class="button button-style1">Read More</a>
-			</section>
 
-		</div>
-	</div>
+
+
+
+<div class="row">
+
+<div class="large-7 columns samping">
+ 
+    {% for post in paginator.posts %}
+     <article class="post tag-speeches">
+         <div style="padding: 20px;">
+    <header class="post-header">
+        <h2 class="post-title"><a id="route" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h2>
+    </header>
+    <section class="post-excerpt">
+        <p>{{ post.content | strip_html | truncatewords:45}} <a id="route" class="read-more" href="{{ post.url | prepend: site.baseurl }}">»</a></p>
+    </section>
+    
+    </div>
+    <footer class="post-meta" style="    background: #00bc8c;
+    padding: 10px 0 0px 20px;">
+        
+        
+        <p class="post-tags"><i class="typico typcn typcn-tags" style="    font-size: 28px;
+    position: relative;
+    top: 1px;
+    font-size:15px"></i> {% include post-tags.html %}</p>
+        <time class="post-date" datetime="{{ post.date | date_to_xmlschema }}"><i class="typico typcn typcn-calendar-outline" style="    font-size: 28px;
+    position: relative;
+    top: 1px;
+    font-size:15px"></i> {{ post.date | date: "%b %-d, %Y" }}</time>
+        <p class="post-date"><i class="typico typcn typcn-messages" style="    font-size: 28px;
+    position: relative;
+    top: 1px;
+    font-size:15px"></i> <a id="route" class="disqus-comment-count"  href="{{ post.url | prepend: site.baseurl }}#disqus_thread" style="color:#fff"> 0 Comments</a></p>
+    </footer>
+</article>
+    {% endfor %}
+  
+
+  <!-- Pagination links -->
+<div class="pagination">
+  {% if paginator.previous_page %}
+    <a id="route" href="{{ paginator.previous_page_path }}" class="previous"><i class="typcn typcn-chevron-left-outline" style="    font-size: 14px;
+    position: relative;
+   
+    "></i> Previous</a>
+  {% else %}
+    <span class="previous" align="left"><i class="typcn typcn-chevron-left-outline" style="    font-size: 14px;
+    position: relative;
+    
+    "></i> Previous</span>
+  {% endif %}
+  
+  {% if paginator.next_page %}
+    <a id="route" href="{{ paginator.next_page_path }}" class="next">Next <i class="typcn typcn-chevron-right-outline" style="    font-size: 14px;
+    position: relative;
+  
+    "></i></a>
+  {% else %}
+    <span class="next" align="right">Next <i class="typcn typcn-chevron-right-outline" style="    font-size: 14px;
+    position: relative;
+    
+    "></i></span>
+  {% endif %}
 </div>
 
-<!-- Main -->
-	<div id="main">
-		<div id="content" class="container">
 
-			<div class="row">
-				<section class="6u">
-					<a href="#" class="image full"><img src="/assets/images/pic01.jpg" alt=""></a>
-					<header>
-						<h2>Mauris vulputate dolor</h2>
-					</header>
-					<p>In posuere eleifend odio. Quisque semper augue mattis wisi. Maecenas ligula. Pellentesque viverra vulputate enim. Aliquam erat volutpat. Donec leo, vivamus fermentum nibh in augue praesent a lacus at urna congue rutrum.</p>
-				</section>
-				<section class="6u">
-					<a href="#" class="image full"><img src="/assets/images/pic02.jpg" alt=""></a>
-					<header>
-						<h2>Mauris vulputate dolor</h2>
-					</header>
-					<p>In posuere eleifend odio. Quisque semper augue mattis wisi. Maecenas ligula. Pellentesque viverra vulputate enim. Aliquam erat volutpat. Donec leo, vivamus fermentum nibh in augue praesent a lacus at urna congue rutrum.</p>
-				</section>
-			</div>
 
-			<div class="row">
-				<section class="6u">
-					<a href="#" class="image full"><img src="/assets/images/pic03.jpg" alt=""></a>
-					<header>
-						<h2>Mauris vulputate dolor</h2>
-					</header>
-					<p>In posuere eleifend odio. Quisque semper augue mattis wisi. Maecenas ligula. Pellentesque viverra vulputate enim. Aliquam erat volutpat. Donec leo, vivamus fermentum nibh in augue praesent a lacus at urna congue rutrum.</p>
-				</section>
-				<section class="6u">
-					<a href="#" class="image full"><img src="/assets/images/pic04.jpg" alt=""></a>
-					<header>
-						<h2>Mauris vulputate dolor</h2>
-					</header>
-					<p>In posuere eleifend odio. Quisque semper augue mattis wisi. Maecenas ligula. Pellentesque viverra vulputate enim. Aliquam erat volutpat. Donec leo, vivamus fermentum nibh in augue praesent a lacus at urna congue rutrum.</p>
-				</section>
-			</div>
 
-		</div>
-	</div>
+
+
+</div>
+
+
+{% include widgets.html %}
+
+
+</div>
