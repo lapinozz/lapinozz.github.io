@@ -3,18 +3,18 @@
 # This config file is meant for settings that affect your whole blog, values
 # which you are expected to set up once and rarely need to edit after that.
 # For technical reasons, this file is *NOT* reloaded automatically when you use
-# 'jekyll serve'. If you change this file, please restart the server process.
+# 'jekyll serve'. If you change this file, please restart the serv er process.
 
 # Site settings
-title: Spaghetti-san Blog
-email: spaghettisan@yahoo.com
+title: Placeholder
+email: monstrefou@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
-  All about Spaghetti-san Project
+  Super duper blog about suffs
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://spaghetti.ga" # the base hostname & protocol for your site
-twitter_username: axlyody
-github_username:  spaghetti-san
-facebook_username:  axlyody
+url: "http://lapinozz.github.io/" # the base hostname & protocol for your site
+twitter_username: lapinozz
+github_username: lapinozz
+facebook_username: lapinozz
 
 # Gems
 gems: 
