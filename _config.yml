@@ -11,10 +11,10 @@ email: monstrefou@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
   Super duper blog about suffs
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://lapinozz.github.io/" # the base hostname & protocol for your site
-twitter_username: lapinozz
+url: "http://lapinozz.github.io" # the base hostname & protocol for your site
+#twitter_username: lapinozz
 github_username: lapinozz
-facebook_username: lapinozz
+#facebook_username: lapinozz
 
 # Gems
 gems: 
