@@ -739,7 +739,7 @@ ul {
     -ms-animation: pace-spinner 400ms linear infinite;
     -o-animation: pace-spinner 400ms linear infinite;
     animation: pace-spinner 400ms linear infinite;
-    margin-left: 85px;
+    margin-left: -85px;
 }
 
 @-webkit-keyframes pace-spinner {
