@@ -14,7 +14,7 @@ tags:
 This is an article about vtable, even if in practice you should never care about them it can be useful to know how they work when considering performance (Especially for virtual inheritance). And well... it's fun.
 
 
-#Disclaimer
+# Disclaimer
 Vtabels are not part of the standard, using them manually is absolutly **_not portable_**. The only purpose of this code is to <del>have fun</del> learn and understand. Don't use it for any other purpose
 
 
@@ -23,7 +23,7 @@ Code tested on
 - GCC 5.3 - Ubuntu 14.04
 
 
-#Vtable by example
+# Vtable by example
 
 Vtables are used by the compiler to know which virtual function to call or how to access members of virtual inherited class. Let's see an example. 
 
