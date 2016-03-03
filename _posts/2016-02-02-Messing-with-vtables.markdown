@@ -8,10 +8,9 @@ categories: learning
 tags:
 - vtable
 - C++
-- going too deep
 ---
 
-This is an article about vtable, even if in practice you should never care about them it can be useful to know how they work when considering performance (Especially for virtual inheritance). And well... it's fun.
+This is an article about vtable. Even if in practice you should never use them directly, it can be useful to know how they work when considering performance (Especially for virtual inheritance). And well... it's fun.
 
 
 # Disclaimer
