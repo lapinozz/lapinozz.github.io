@@ -21,6 +21,7 @@ Vtabels are not part of the standard, using them manually is absolutly **_not po
 Code tested on 
 
 - GCC 5.3 - Ubuntu 14.04
+- Clang 3.7 - Debian GNU/Linux testing (stretch)
 
 
 # Vtable by example
@@ -96,7 +97,7 @@ Now we know how to read the vtable but can we write to it too? In my test I've f
 Let's declare a simple function to inject into our vtable
 
 {% highlight cpp linenos %}
-void intruderFunction(BaseClass *this_ptr)
+void intruderFunction(BaseClass* this_ptr)
 {
         std::cout << "Hello from intruder" << std::endl;
 }
