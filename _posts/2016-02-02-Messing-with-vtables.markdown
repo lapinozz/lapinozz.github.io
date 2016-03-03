@@ -44,7 +44,7 @@ struct ChildClassA : public BaseClass
     }
 };
 
-struct ChildClassB
+struct ChildClassB : public BaseClass
 {
     void sayHello() override
     {
