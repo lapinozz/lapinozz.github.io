@@ -164,7 +164,7 @@ And we can use and call the function pointer the same way as we did previously.
 <br/>
 <br/>
 
-That's it for part 1! In part 2 we'll look into the more complex subject of virtual inheritance.
+That's it for part 1! In [part 2] we'll look into the more complex subject of virtual inheritance.
 
 *[vtable]: virtual table
 *[vptr]: pointer to virtual table
