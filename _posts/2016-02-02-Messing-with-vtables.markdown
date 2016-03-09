@@ -170,3 +170,5 @@ That's it for part 1! In part 2 we'll look into the more complex subject of virt
 *[vptr]: pointer to virtual table
 *[segfault]: segmentation fault
 
+[part 2]: {{site.url}}learning/2016/02/09/Messing-with-vtables-part-two.html
+
