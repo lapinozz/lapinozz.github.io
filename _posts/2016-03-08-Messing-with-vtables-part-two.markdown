@@ -24,7 +24,7 @@ Code tested on
 
 # Simple Inheritance
 
-First, let's see a simple case where virtual inheritance is needed. We have four classes, `GuiElement`, `Label`, `Clickable` and `Button`. They form an hierarchy where both `Label` and `Clickable` inherited from `GuiElement`. `Button` needs to be drawn so it inhertie from and `Label`. It also need to be clickable so of course it also inherits from `Clickable`. One code is worth ten thousand words right?
+First, let's see a simple case where virtual inheritance is needed. We have four classes, `GuiElement`, `Label`, `Clickable` and `Button`. They form an hierarchy where both `Label` and `Clickable` inherited from `GuiElement`. `Button` needs to be drawn so it inhertie from `Label`. It also need to be clickable so of course it also inherits from `Clickable`. One code worth ten thousand words right?
 
 {% highlight cpp linenos %}
 struct GuiElement
@@ -54,7 +54,7 @@ And to make it even easier to visualize, UML diagram:
 ![UML_vtable_simple_inheritance]({{site.url}}/assets/image/UML_vtable_simple_inheritance.png)
 {:align="center"}
 
-That's not quite what we want. If we had an object `button` of type `Button` we could see that it has two member variable `id`, accessible by `button.Label::id` and `button.Clickable::id`. Now we can look at how our structs are organized in memory.
+That's not quite what we want. If we had an object `button` of type `Button` we could see that it has two member variable `id`, accessible by `button.Label::id` and `button.Clickable::id`. We'll still try to understand how it work for simple inheritance. Here we can look at how our structs are organized in memory.
 
 {::comment}
 {% highlight text %}
@@ -77,7 +77,7 @@ Clickable:
 {:style="table-layout:fixed;width:40%;" align="center"}
 <br/>
 
-The magic of this configuration is that you can very easily cast between `Label*` and `GuiElement*`. Of course, then it's as simpel for `Clickable*` and `GuiElement*` Unfortunately, it is not that simple for `Button`
+The magic of this configuration is that you can very easily cast between `Label*` and `GuiElement*`. Just like in all the code and explanation we'll see, `Label` and `Clickable` are equivalent. Minus the name change, the same code and concept applies to both in the exact same way. Unfortunately, it is not that simple for `Button`.
 
 <br/>
 
@@ -106,10 +106,10 @@ To cast from `Button*` to `Clickable*` we need to adjust our pointer to point to
 {:style="width:40%;" align="center"}
 <br/>
 
-And when we want to cast it back to `Button*` we just remove that offset from the pointer so that we point back to `Label::GuiElement::id` again.
+And now we are pointing to a valid `Clickable` object. To cast it back to `Button*` we just have to remove that offset from the pointer so that we point to `Label::GuiElement::id` again.
 
 
-You might want to note that you can't do `GuiElement* guiElement = button` since the compiler wouldn't know to which `GuiElement` you refer. If I'm begin stubborn and decide to try anyway, GCC gently remind me that I'm an idiot:
+You might want to note that you can't do `GuiElement* guiElement = button`. Because `button` has two instance of `GuiElement`, the compiler wouldn't know to which you want to refer . If I'm begin stubborn and decide to try anyway, GCC gently remind me that I'm an idiot:
 
 {% highlight text %}
 error: ‘GuiElement’ is an ambiguous base of ‘Button’
@@ -130,7 +130,7 @@ And that's pretty much it for basic inheritance, let's dive in the core subject.
 # Virtual Inheritance
 
 
-So we've seen that in our example that when using simple inheritance we don't get exactly what we wanted, we got two instances of `GuiElement` for each `Button`. That's an issue we can fix with one magic word!
+So we've seen that in our example that, when using simple inheritance, we don't get exactly what we wanted, we got two instances of `GuiElement` for each `Button`. That's an issue we can fix with one magic word!
 
 {% highlight cpp linenos %}
 struct Label : virtual public GuiElement
@@ -164,7 +164,7 @@ Much better! Now our `Button`s only have one instance of `GuiElement`. This may 
 {:style="table-layout:fixed;width:40%;" align="center"}
 <br/>
 
-Unexpected right? At least it was for me at first. Let's see how it works! Note that the following code is not the actual class declaration, rather the result of what the object look like at the end when the program is running. To avoid confusion, I'll add the _real sufix at the end of structs name. And don't forget that this is only to give you an idea of how it work, details might change depending of the compiler.
+Unexpected right? At least it was for me at first. Let's see how it works! Note that the following code is not the actual class declaration, rather the result of compilation. it's what the object might will look like in memory. To avoid confusion, I'll add the sufix `_real` at the end of structs name. And don't forget that this is only to give you an idea of how it work, details might change depending of the compiler.
 
 
 First case, Label:
@@ -206,7 +206,7 @@ id = *(int*)((int8_t*)label + label.vptr->OffsetToVariable_GuiElement_id);
 {% endhighlight %}
 
 
-But we didn't initialize our `label` with valid offset yet! Adding a constructor to do so, we would end up with this. Note that we get a memory leak here since the vtable get allocated but never got freed.
+But we didn't initialize our `label` with valid offset yet! Adding a constructor to do so, we would end up with this. Note that we get a memory leak here since the vtable get allocated but never is freed.
 
 
 {% highlight cpp linenos %}
@@ -237,7 +237,7 @@ The same applies for `Clickable`.
 I hope that you're still following and that it's not too messy. If everything is confusing and you're lost then it's my fault, I apologize.
 
 
-Now to understand how it works for `Button`, especially for casting to `Label*` or `Clickable*`.
+Now we need to understand how it works for `Button`, especially for casting to `Label*` or `Clickable*`.
 
 {% highlight cpp linenos %}
 struct Button_vtable
@@ -271,14 +271,14 @@ struct Label_real
 };
 {% endhighlight %}
 
-The first two members fit perfectly in the layout of `Button`. For the third one, remember, it's position is calculated from an offset located in the vtable. So we just have to adjust this offset so that it point to our `guiElement_id` in `Button`. To make it more clear, yes I'm better with code than words, here's our beloved constructor.
+The first two members fit perfectly in the layout of `Button`. For the third one, remember, it's position is calculated from an offset located in the vtable. So we just have to adjust this offset so that it point to our `guiElement_id` in `Button`. To make it more clear(yes I'm better with code than words) here's our beloved constructor.
 
 {% highlight cpp linenos %}
 Button_real::Button_real()
 {
     vptr_label = new Label_vtable();
 
-    // so the variable is separeted from the vptr by three int and two pointer
+    // the variable is separeted from the vptr by three int and two pointer
     vptr_label->OffsetToVariable_GuiElement_id = sizeof(void*)*2 + sizeof(int)*3;
 
     // this vptr is still at the top
@@ -286,7 +286,7 @@ Button_real::Button_real()
 
     vptr_clickable = new Clickable_vtable();
 
-    // so the variable is separated from the vptr by two int and one pointer
+    // the variable is separated from the vptr by two int and one pointer
     vptr_clickable->OffsetToVariable_GuiElement_id = sizeof(void*) + sizeof(int)*2;
 
     // this vptr is separated from the top by one int and one pointer
@@ -297,7 +297,7 @@ Button_real::Button_real()
 }
 {% endhighlight %}
 
-Now you know how it works under the hood when casting from derived class to base class (upcasting) when virtual inheritance is involved. You can brag to your friend about it and look cool. Until they ask you about downcast... you might be tempted to say that's as simple as it is for non-virtual inheritance, you just have to substract the offset you added previously. Well no, that would be too easy wouldn't it be?
+Now you know how it works under the hood when casting from derived class to base class (upcasting), even when virtual inheritance is involved. You can brag to your friend about it and look cool. Until they ask you about downcast... You might be tempted to say that's it as simple as it is for non-virtual inheritance, you just have to substract the offset you added previously right? Well, no, that would be too easy wouldn't it be?
 
 
 To understand why, we need yet another class.
@@ -315,7 +315,7 @@ And the obligatory UML diagram.
 ![UML_vtable_simple_inheritance]({{site.url}}/assets/image/UML_vtable_virtual_inheritance_advanced.png)
 {:align="center"}
 
-Consider the following case. We have wanted to cast from `GuiElement*` to `Label*`, don't forget it could be pointing to any of the following; `GuiElement`, `Label`, `Clickable`, `Button` or `Slider`. Now the problem is that `GuiElement` by itself carry no type information. 
+Consider the following case. We have want to cast from `GuiElement*` to `Label*`, don't forget it could be pointing to any of the following; `GuiElement`, `Label`, `Clickable`, `Button` or `Slider`. Now the problem is that `GuiElement` by itself carry no type information. 
 
 {% highlight cpp linenos %}
 struct GuiElement_real
@@ -324,8 +324,8 @@ struct GuiElement_real
 };
 {% endhighlight %}
 
-That means it could be any of the following case and we have no way to know which one it is.
-
+That means it could be any of the following case 
+That means that the `GuiElement` could be at any of those point and we have no way to know which one it is. Since we dont have RTTI we can't know how to cast from `GuiElement*` to `Label*` because we dont know where we point relatively to the `Label`, and in some case there is no `Label`.
 
 ||Slider||Button||Label||Clickable||GuiElement
 |:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|
@@ -360,7 +360,7 @@ struct GuiElement
 };
 {% endhighlight %}
 
-Now the compiler knows that `GuiElement` needs a vtable and will include one. And so we will be able to get runtime information and perform our cast! But first, since we modified `GuiElement` we need to define `Button_real` and `Button_vtable` again.
+Now the compiler knows that `GuiElement` needs a vtable and will include one. And since the vtable include RTTI (via `typeInfoPtr`) we will be able to perform our cast! But first, since we modified `GuiElement` we need to redefine `Button_real` and `Button_vtable`.
 
 {% highlight cpp linenos %}
 struct Button_vtable
@@ -389,15 +389,15 @@ struct Button_real
 {% endhighlight %}
 
 
-From all the information here you should be able to work out what `GuiElement_vtable` looks like. Of course `vptr_guiElement` needa to be added to `Lable_real` and `Clickable_real`. And every constructor need to be updated so that they give the correct offset.
+From all the information here you should be able to work out what `GuiElement_vtable` looks like. Of course `vptr_guiElement` need to be added to `Lable_real` and `Clickable_real`. And every constructor need to be updated so that they give the correct offset.
 
 
-One last point, you might wonder what is `offsetToTop` doing in vtables. It's used when casting to `void*` so that you can simply substract the correct pointer by the offset to get the base of the most derived class.
+One last point, you might wonder what's `offsetToTop` doing in vtables. It's used when casting to `void*` so that you can simply substract the pointer by the offset to get the base of the most derived class.
 
 <br/>
 <br/>
 
-And that's pretty much it. I hope it was clear enough. If you have any suggestion or questionm, feel free to comment in the box belsow or to contact me directly.
+And that's pretty much it. I hope it was clear enough. If you have any suggestion or question, feel free to comment in the box below or to contact me directly.
 
 *[vtable]: virtual table
 *[vptr]: pointer to virtual table
