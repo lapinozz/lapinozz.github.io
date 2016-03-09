@@ -11,8 +11,8 @@ email: monstrefou@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
   Super duper blog about suffs
 baseurl: "" # the subpath of your site, e.g. /blog
-#url: "http://localhost:4000" # the base hostname & protocol for your site
-url: "http://lapinozz.github.io" # the base hostname & protocol for your site
+url: "http://localhost:4000" # the base hostname & protocol for your site
+#url: "http://lapinozz.github.io" # the base hostname & protocol for your site
 #twitter_username: lapinozz
 github_username: lapinozz
 #facebook_username: lapinozz
@@ -27,10 +27,6 @@ paginate: 5
 paginate_path: "page/:num"
 # Build settings
 markdown: kramdown
-highlighter: rouge
-lsi: false
-safe: true
-incremental: false
 
 # Archive
 jekyll-archives:

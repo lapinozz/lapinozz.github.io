@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Messing with vtables - Part I"
-date:   2016-02-02 21:58:24 +0500
+date:   2016-02-02 21:58:24 -0500
 image:
    url: http://lapinozz.github.io/assets/image/vtable_post_tumbnail.gif
 categories: learning
