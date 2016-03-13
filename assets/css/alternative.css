@@ -73,6 +73,7 @@ ol {
 li>ul,
 li>ol {
     margin-bottom: 0;
+    margin-left: 20px;
 }
 
 h1,

@@ -73,6 +73,7 @@ ol {
 li>ul,
 li>ol {
     margin-bottom: 0;
+    margin-left: 10px;
 }
 
 h1,
@@ -256,7 +257,7 @@ ul {
     /*list-style: none;*/
     margin-bottom: 30px;
 	margin-left: 5px;
-	padding: inherit;
+	padding-left: inherit;
 }
 
 .post:after {

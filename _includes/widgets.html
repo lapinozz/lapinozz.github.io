@@ -13,7 +13,8 @@
 <ul class="tags" style="padding-bottom: 20px;">
 	  {% for tag in site.tags %}
 	  
-  <li style="font-size: {{ tag | last | size | times: 100 | divided_by: site.tags.size | plus: 70  }}%">
+  <!-- <li style="font-size: {{ tag | last | size | times: 100 | divided_by: site.tags.size | plus: 70  }}%"> -->
+    <li style="font-size:95%">
     <a id="route" href="/tags/#{{ tag | first | slugize }}">
       {{ tag | first }}
       <span>{{ tag | last | size }}</span>
