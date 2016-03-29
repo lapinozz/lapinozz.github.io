@@ -11,6 +11,7 @@ permalink: /project.html
       {% if post.categories contains 'project' %}
       
      <div class="wf-box">
+     
          <a id="route" href="{{ post.url | prepend: site.baseurl }}">
         
 <div class="tglgede" style="
@@ -34,13 +35,16 @@ permalink: /project.html
         
         
          </a>
-         <div class="content">
-            <a id="route" href="{{ post.url | prepend: site.baseurl }}">
-            <h3 style="padding: 5px 8px;
+         
+         <div class="content" style="padding: 5px 8px;
     margin-bottom: 0;
     background-color: #00bc8c;
-    color: #fff;
-    font-size: 15px;">{{ post.title }}</h3>
+    font-size: 15px;">
+         {% if post.github != null %}
+         <a style="color: #fff;" href="{{ post.github }}">GitHub Page</a>
+         {% endif %}
+            <a style="color: #fff;" id="route" href="{{ post.url | prepend: site.baseurl }}">
+            <h3 >{{ post.title }}</h3>
             </a>   
          
          </div>

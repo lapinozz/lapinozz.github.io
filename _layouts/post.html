@@ -7,11 +7,18 @@ layout: default
 
   <header class="inpost-header">
     <h1 class="inpost-title" itemprop="name headline">{{ page.title }}</h1>
-    <h1 style="float:right">
+    <div style="float:right">
+    <h1>
      <i class="typico typcn typcn-messages" style="    position: relative;
     top: 0px;
     font-size: 25px;"></i> <a class="disqus-comment-count" href="#disqus_thread" data-disqus-identifier="{{page.id}}" style="color:#fff"> 0</a>
     </h1>
+    {% if page.github != null %}
+    <h1 style="">
+    <i class="typcn typcn-social-github"></i><a style="color: #5BFFD5;" href="{{ post.github }}">GitHub Page</a>
+    </h1>
+  {% endif %}
+  </div>
     
    
     
@@ -71,6 +78,9 @@ layout: default
   {% for tag in tags %}
   <a href="/tags/#{{tag|slugize}}" style="color: #fff;"><i class="typcn typcn-tags"></i> {{tag}}</a>{% unless forloop.last %} {% endunless %}
   {% endfor %}
+  {% if page.github != null %}
+    |<i class="typcn typcn-social-github"></i><a style="color: #5BFFD5;" href="{{ post.github }}">GitHub Page</a>
+  {% endif %}
   
 
 </article>
