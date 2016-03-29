@@ -3,7 +3,7 @@ layout: post
 title:  "Serializer based on type registering"
 date:   2016-03-28 15:36:54 -0500
 image:
-   url: http://lapinozz.github.io/assets/image/serializer_post_thumbnail.png
+   url: http://lapinozz.github.io/assets/image/serializer_post_thumnail.png
 categories: project
 tags:
 - Serializer
