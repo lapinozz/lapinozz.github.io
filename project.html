@@ -41,7 +41,8 @@ permalink: /project.html
     background-color: #00bc8c;
     font-size: 15px;">
          {% if post.github != null %}
-         <a style="color: #fff;" href="{{ post.github }}">GitHub Page</a>
+         <a style="color: #fff;" href="{{ post.github }}">GitHub Link</a>
+         <div style="text-align: center;">---------</div>
          {% endif %}
             <a style="color: #fff;" id="route" href="{{ post.url | prepend: site.baseurl }}">
             <h3 >{{ post.title }}</h3>
