@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Generating brainfuck code using genetic algorithm"
-date:   2016-03-12 21:11:19 -0500
+date:   2016-03-27 21:56:03 -0500
 image:
    url: http://lapinozz.github.io/assets/image/genetic_algorithm_post_tumbnail.png
 categories: project
