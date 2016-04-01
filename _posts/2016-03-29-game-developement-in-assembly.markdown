@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Game developement in Assembly"
-date:   2016-03-28 15:36:54 -0500
+date:   2016-03-31 14:41:21 -0500
 image:
    url: http://lapinozz.github.io/assets/image/assembly_post_thumbnail.png
 categories: project
