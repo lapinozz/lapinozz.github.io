@@ -47,5 +47,5 @@ This is a side side project on which i don't work very often. Still, this is one
 [this one]: http://www.primaryobjects.com/2013/01/27/using-artificial-intelligence-to-write-self-modifying-improving-programs/
 
 [livecoding]: livecoding.com
-[on my channel on livecoding] https://www.livecoding.tv/lapinozz/
+[on my channel on livecoding]: https://www.livecoding.tv/lapinozz/
 
