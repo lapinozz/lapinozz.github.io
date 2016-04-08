@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Code Challenge - Self Replicating Code"
-date:   2016-04-06 8:22:23 -0500
+date:   2016-04-06 08:22:23 -0500
 image:
    url: http://lapinozz.github.io/assets/image/self_replicating_post_thumbnail.jpeg
 categories: learning
