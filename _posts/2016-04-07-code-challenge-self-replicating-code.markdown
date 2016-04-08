@@ -8,6 +8,8 @@ categories: learning
 tags:
 - C++
 - IRC
+- Quine
+- Challenge
 ---
 
 # Quine
