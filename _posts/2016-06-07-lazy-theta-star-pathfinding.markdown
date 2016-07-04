@@ -58,7 +58,7 @@ Here's all the nodes that get checked with on the left a weight of 1(basically n
 
 ![image](http://aigamedev.com/wp-content/blogs.dir/5/files/2013/07/lazy_1_11.png)
 
-# Clonclusion
+# Conclusion
 
 My github repo contains the main file, pathfinding.hpp and an adaptor example for tile grid in tileadaptor.hpp (2x AA battery included)
 
