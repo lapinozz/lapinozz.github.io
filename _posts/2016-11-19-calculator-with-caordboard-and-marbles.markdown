@@ -16,7 +16,7 @@ tags:
 
 # What is it?
 
-LOGIC is a fully functional 4-bit calculator made entirely with cardboard, hot glue and marbles. I built it with my little sisters for a science activity, it can do addition in number from 0 to 15 for a maximum computable number of 30. We made it from scratch and at the time I didn't saw any of the various kind of calculator that have been made using Lego, wood and other, so it's a completely new model!
+LOGIC is a fully functional 4-bit calculator made entirely out of cardboard, hot glue and marbles. I built it with my little sisters for a science activity, it can add numbers from 0 to 15 for a maximum computable number of 30. We made it from scratch and at the time I didn't see any of the various kind of calculator that have been made using Lego, wood and other, so it's a completely new model!
 
 # Why?
 
@@ -24,26 +24,26 @@ Mostly for fun! For some time now I wanted to build an adder but I wasn't sure h
 
 # What was learned?
 
-My little sisters already knew how to count in binary, through the project they also learned about, binary addition, binary/decimal conversion, logic gates, basic logic circuit, and more.
+My little sisters already knew how to count in binary, through the project they also learned about, binary addition, binary/decimal conversion, logic gates, basic logic circuits, and more.
 
-I also learned how simple it can be to build logic circuit using simple material lying around. As in all my project, I always try do with what I already have.
+I also learned how simple it can be to build logic circuits using simple material lying around. As in all my projects, I always try do with what I already have.
 
 # What does it look like?
 
-![image](/assets/image/LOGIC/LOGIC.jpg){:height="600px"}  
+![image](/assets/image/LOGIC/LOGIC-low.jpg){:height="600px"}  
 
 
-# Woaw, How do you use it?
+# Woah, How do you use it?
 
 You place your input numbers as binary in the inputs, a marble is a one, no marble is a zero.
-The bit on the right is the less significant bit. You have to reset some part of the calculator before each calculation too.
+The bit on the right is the least significant bit. You have to reset some part of the calculator before each calculation too.
 Then you remove the little bit of cardboard that kept the marbles from running down and they will slide along the paths, moving and changing the paths as they go, to finally arrive at the outputs at the bottom, giving you the result, as binary again.
 
-![image](/assets/image/LOGIC/LOGIC-IO.jpg){:height="600px"}  
+![image](/assets/image/LOGIC/LOGIC-IO-low.jpg){:height="600px"}  
 
 Here's an example of input if you wanted to add 7 plus 5.
 
-![image](/assets/image/LOGIC/LOGIC-7-plus-5.jpg){:height="600px"}  
+![image](/assets/image/LOGIC/LOGIC-7-plus-5-low.jpg){:height="600px"}  
 
 ## How does it work?
 
@@ -76,9 +76,9 @@ The XOR was a bit more complicated because the inputs had to be at the exact sam
 So how do we model an XOR? Simple!  
 
 If you have one marble than it pass  
-If you have two marbles <div id="149b8e72d8f4ce837ac995e97c216319" data-errorword="thant" class="error-span misspelling tooltipstered"><span class="original-content">then</span> they should cancel out  
-</div>
-We imagined that it would be quite simple to have them cancel out. Put a path only large enough for one marble and when they arrive they collide and keep each other falling in the path. The problem is that they have in perfect synchronization and even when it's the case they bounce and usually they get out anyways.  
+If you have two marbles then they should cancel out  
+
+We imagined that it would be quite simple to have them cancel out. Put a path only large enough for one marble and when they arrive they collide and keep each other falling in the path. The problem is that they have to be in perfect synchronization and even when it's the case they bounce and usually they get out anyways.  
 
 We still managed to make one but it was so unreliable that we decided to move on and to just let it be as a prototype as we might not need it at the end.
 
@@ -119,7 +119,7 @@ If there is three marbles: make one the fall in the first output and another in 
 
 It was really easy to add the third case to our Half-Adder model, literally only one little piece of cardboard needed to be added. The reason our Full-Adder looks so different is because we edited it to allow for more time between the first and second marble thus lowering the synchronicity requirement.  
 
-![image](/assets/image/LOGIC/Full-Adder-IO.jpg){:height="600px"}  
+![image](/assets/image/LOGIC/Full-Adder-IO-low.jpg){:height="600px"}  
 
 So for one marble it falls in path 1  
 ![image](/assets/image/LOGIC/Full-Adder-1-cropped.gif)  
@@ -147,7 +147,7 @@ Even if each Half-Adder and Full-Adder we made were working properly, once all g
 
 We built two more Full-Adder and the rest are just path so that the marbles go to the correct inputs and outputs!
 
-![image](/assets/image/LOGIC/LOGIC-gates.jpg){:height="600px"}  
+![image](/assets/image/LOGIC/LOGIC-gates-low.jpg){:height="600px"}  
 
 # Conclusion
 
