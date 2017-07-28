@@ -96,6 +96,7 @@ I won't cover every line, it's not trivial but with the "function" name, and som
 
 With that in mind, feel free to inspire yourself from it or suggest improvements.
 
+<div markdown = "0">
 <details>
 <summary>Click Here To Expend the code...</summary>
 {% highlight cpp %}
@@ -236,7 +237,7 @@ struct Vector
 };
 {% endhighlight %}
 </details>
-
+</div>
 
 # Note on my synthax
 
@@ -303,6 +304,7 @@ struct ValueHolder
 Now I can hold a value, a 5 as an int for example `ValueHolder<int, 5>`. But it's still extremely annoying to always have to care about the ValueHolder and such. So I made an overload for values, this way I can push, remove, and find value using the exact same syntax as I would with types:
 
 
+<div markdown = "0">
 <details>
 <summary>Click Here To Expend the (enormous) code...</summary>
 {% highlight cpp %}
@@ -507,6 +509,7 @@ struct VectorImpl<false, ValueHolder<T, V>...> : public VectorImpl<true, ValueHo
 };
 {% endhighlight %}
 </details>
+</div>
 
 # Map
 
@@ -600,6 +603,7 @@ Thus, if I made an error somewhere, I will immediately know.
 I made a couple of test cases as I was adding various functions.
 The define is because this is all C++14 conformant and the C++14 static_assert version requires a string as second parameter to output in case of failure, in C++17 it is optional. To make my life easier, I made that macro that just put an empty string for me.
 
+<<div markdown = "0">
 <details>
 <summary>Click Here To Expend the code...</summary>
 {% highlight cpp %}
@@ -662,6 +666,7 @@ static_assert(astar::template BuildNeighbors<Node3>::Type::Size == 3);
 static_assert(astar::template BuildNeighbors<Node4>::Type::Size == 4);
 {% endhighlight %}
 </details>
+</div>
 
 # The actual map
 
@@ -690,6 +695,7 @@ Here's my map, `0` is void, `1` is a wall, `S` is the start and `E` is the end. 
 
 Also [available on github](https://github.com/lapinozz/CompileTime-Pathfinding/blob/master/main.cpp)
 
+<div markdown = "0">
 <details>
 <summary>Click Here To Expend the code...</summary>
 {% highlight cpp %}
@@ -1367,6 +1373,7 @@ int main()
 
 {% endhighlight %}
 </details>
+</div>
 
 ## It's nice and all that but how do you know it actually works?
 
