@@ -25,7 +25,7 @@ This is the base I used for this challenge.
 
 # The constraint
 
-Just like for [the math expression parser challenge]({% post_url 2016-03-012-math-expression-evaluator %}) I was on the IRC server boxbox.org but this time on the channel #sfml where multiple bot are present. The idea had come multiple time to try and create a loop between multiple bot. After some time someone stumbled across #two command of two bot that made them intereact, to understand this process you have to know that most bot where ignoring each other and ignoring their own messages. Once the commands found the real challenge could start, writing a self replicating code that could fit with them! Two bots were needed for the completion of this self imposed challenge.
+Just like for [the math expression parser challenge](http://lapinozz.github.io/learning/2016/03/13/math-expression-evaluator.html) I was on the IRC server boxbox.org but this time on the channel #sfml where multiple bot are present. The idea had come multiple time to try and create a loop between multiple bot. After some time someone stumbled across #two command of two bot that made them intereact, to understand this process you have to know that most bot where ignoring each other and ignoring their own messages. Once the commands found the real challenge could start, writing a self replicating code that could fit with them! Two bots were needed for the completion of this self imposed challenge.
 
 
 # Cee
