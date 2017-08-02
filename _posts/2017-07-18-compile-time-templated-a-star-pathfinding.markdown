@@ -409,7 +409,7 @@ The complete and final code is [available on github](https://github.com/lapinozz
 
 ## It's nice and all that but how do you know it actually works?
 
-Excellent question! As I showed earlier, we can force the compiler the compiler to output the final path, then I extract that path using a regex `.*?(Vec<(\d+), (\d+)>).*?` and replace with ` {$2,$3}, \n` so that 
+Excellent question! As I showed earlier, we can force the compiler to output the final path, then I extract that path using a regex `.*?(Vec<(\d+), (\d+)>).*?` and replace with ` {$2,$3}, \n` so that 
 
 {% highlight txt %}
 668 : <source>:668:21: error: no type named 'Test' in 'Vector<Vec<0, 0>, Vec<1, 0>, Vec<2, 0>, Vec<3, 0>, Vec<4, 0>, Vec<5, 0>, Vec<6, 0>, Vec<7, 0>, Vec<7, 1>, Vec<7, 2>, Vec<7, 3>, Vec<7, 4>, Vec<7, 5>, Vec<7, 6>, Vec<7, 7>, Vec<6, 7>, Vec<5, 7>, Vec<5, 6>, Vec<5, 5>, Vec<5, 4>, Vec<5, 3>, Vec<5, 2>, Vec<4, 2>, Vec<3, 2>, Vec<2, 2>, Vec<2, 3> >'
