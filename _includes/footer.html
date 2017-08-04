@@ -64,6 +64,11 @@ $(document).ready(function() {
                 position: 'left',
             });
         });
+
+        document.body.innerHTML = document.body.innerHTML.replace(
+          /\’/gim,
+          '\''
+        );
     </script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.pjax/1.9.6/jquery.pjax.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>

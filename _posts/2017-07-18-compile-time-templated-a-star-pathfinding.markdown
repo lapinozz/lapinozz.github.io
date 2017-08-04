@@ -16,12 +16,12 @@ In simple terms, a complete mess. More concretely, it's a piece of code that I w
 
 # Inspiration 
 
-I asked my good friend Nyrox on the #sfml IRC for a compile-time challenge to my measure.  
+I asked my good friend Nyrox on the #sfml IRC channel for a compile-time challenge to my measure.  
 He finally suggested doing A* pathfinding and I gladly took the challenge. 
 
 # Tools
 
-To help me in my task I used the superb [Compiler Explorer](http://www.godbolt.org). It lets you choose between a vast selection of compiler and versions and continuously try to compile your program as you type it. When your program compiles, it shows the resulting assembly on the right, it's really practical when doing. At the end I also used [Regex101](http://www.regex101.com) to quickly filter part of the compiler output. Finally, I used [C++ Shell](http://www.cpp.sh) which lets you execute C++ code online.
+To help me in my task I used the superb [Compiler Explorer](http://www.godbolt.org). It lets you choose between a vast selection of compilers and versions and continuously tries to compile your program as you type it. When your program compiles, it shows the resulting assembly on the right, it's really practical when doing. At the end I also used [Regex101](http://www.regex101.com) to quickly filter part of the compiler output. Finally, I used [C++ Shell](http://www.cpp.sh) which lets you execute C++ code online.
    
 ## Code
 
@@ -41,7 +41,7 @@ struct Vec
 
 There we go, a simple templated class, I use it to store a position on the map. For example `Vec<4, 5> v;` would create an instance, but in this project I almost only work with type, so I would more likely write `using V = Vec<4, 5>;` which is a type alias declaration. I can then access the value like this `V::x`.
 
-I want to do pathfinding in a 2D map and I will store this map as a 1D array, so I need a way to map 2D coordinate, which I'll call Vec now, to a 1D coordinate, which I'll call Index.
+I want to do pathfinding in a 2D map and I will store this map as a 1D array, so I need a way to map 2D coordinates, which I'll call Vec now, to a 1D coordinate, which I'll call Index.
 
 {% highlight cpp %}
 template<int X, int Y>
@@ -56,18 +56,18 @@ struct Vec
 {% endhighlight %}
 
 
-I basically declare templated variable that is static, so that it is not part of an instance but of the class itself, and constexpr, so that it can be used in a constant expression and thus at compile-time. If any of those terms are unknown to you I suggest researching them and experimenting with them as it is the best way to learn about them and this is not a tutorial about template haxery but merely an overview of my experiment.
+I basically declare a templated variable that is static, so that it is not part of an instance but of the class itself, and constexpr, so that it can be used in a constant expression and thus at compile-time. If any of those terms are unknown to you, I suggest researching and experimenting with them as it is the best way to learn. Also this is not a tutorial about template haxery but merely an overview of my experiment.
 
 Assuming that the horizontal size of my map is 10, I'd use it like this `int Index = V::Index<10>;`.
 
-Of course we also need to do the opposite operation, go from Index to Vec:
+Of course we also need to do the opposite operation, going from Index to Vec:
 
 {% highlight cpp %}
 template<int sizeX, int Index>
 using FromIndex = Vec<Index % sizeX, Index / sizeX>;
 {% endhighlight %}
 
-And using it is as easy as `using V = FromIndex<10, _IndexHere_>;
+And using it is as easy as `using V = FromIndex<10, _IndexHere_>;`
 
 It will also be handy further down the road to get the neighbors of this Vec: 
 
@@ -93,11 +93,11 @@ struct Vec
 # Vector
 
 Now that I have some Vec I need a way to hold them in an array, so I implemented a Vector class.
-I won't cover every line, it's not trivial but with the "function" name, and some serious dedication, understanding the code should be possible. It is probably not the best way to do those things anyways, I wanted something that worked, coding feature as I needed them, once they worked reasonably well and that the code was not too terrible, I just moved on. 
+I won't cover every line, it's not trivial but with the "function" name, and some serious dedication, understanding the code should be possible. It is probably not the best way to do those things anyways, I wanted something that worked, coding features as I needed them, once they worked reasonably well and the code was not too terrible, I just moved on. 
 
 With that in mind, feel free to inspire yourself from it or suggest improvements.
 
-Note that, as to not make the post too long and boring, I removed most function of the following code. In the complete code you can find functions such as `PopBack`, `Find`, `Transform`, `Get`, `Remove` and so on.
+Note that, as to not make the post too long and boring, I removed most functions of the following code. In the complete code you can find functions such as `PopBack`, `Find`, `Transform`, `Get`, `Remove` and so on.
 
 {% highlight cpp %}
 template <typename... T>
@@ -179,7 +179,7 @@ I also define aliases in lower case that are easier to call so rather than doing
 
 In itself, this class works well, you can do fun stuff at compile time, hold any kind of type and insert, remove, find them, etc. But there is a problem, it only holds _Types_, so no int or any kind of value. And I want my final map to be made of chars, how to solve it? 
 
-The solution is simple, make a type that has for sole purpose to hold a value:
+The solution is simple, make a type that has the sole purpose of holding a value:
 
 {% highlight cpp %}
 template<typename T, T Value>
@@ -254,7 +254,7 @@ struct VectorImpl<false, ValueHolder<T, V>...> : public VectorImpl<true, ValueHo
 
 # Map
 
-The map itself is just inheriting from vector and simply adds function to get a value from a coordinate and holds the horizontal size
+The map itself is just inheriting from vector and simply adds a function to get a value from a coordinate and holds the horizontal size
 
 
 {% highlight cpp %}
@@ -307,17 +307,17 @@ struct Heuristic
 
 # Pathfinding
 
-I made a `AStar` class, in it there's a couple of members which are the start value of the algorithm, so the start and end position, the openlist and closedlist, etc.
+I made an `AStar` class, in it there's a couple of members which are the start value of the algorithm, so the start and end position, the openlist and closedlist, etc.
 
-Then I have a "function" called `BuildNeighbors` its role is to gather in a vector all the neighbor position of a node, removing all those are out of the map bounds. Then there is `FilterNeighbors` which removes the position that point to a wall or if a node with the same cost and position exists in the closedlist or openlist. 
+Then I have a "function" called `BuildNeighbors` its role is to gather all the neighbor position of a node in a vector, removing all those are out of the map bounds. Then there is `FilterNeighbors` which removes the position that point to a wall or if a node with the same cost and position exists in the closedlist or openlist. 
 
 `MakePath` is the final function that takes the final node when the algorithm has reached the end position and unroll all its parents and puts all the position in a vector.
 
-`MainLoop` is, well, the main loop, it takes the node with the least cost on the openlist, removes it from the list and find its neighbors using `BuildNeighbors`, filter them using `FilterNeighbors` and add them to the openlist, it then adds the least node to the closedlist and recurse, unless the least node position is equal to the end position, in which case it stops recursing and returns the result of `MakePath`.
+`MainLoop` is, well, the main loop, it takes the node with the least cost on the openlist, removes it from the list and find its neighbors using `BuildNeighbors`, filter them using `FilterNeighbors` and add them to the openlist. It then adds the least node to the closedlist and recurse, unless the least node position is equal to the end position, in which case it stops recursing and returns the result of `MakePath`.
 
 # Debugging
 
-Many times during the development, things refuse to work as intended, but I could not use a simple std::cout as I'm used to, because everything was at compile time. So I found a nice trick, you can force an "error" and hope that the compiler will throw you the information that you want. Here for example I want to know the content of a vector.
+Many times during the development, things refused to work as intended, but I could not use a simple std::cout as I'm used to, because everything was at compile time. So I found a nice trick, you can force an "error" and hope that the compiler will throw you the information that you want. Here for example I want to know the content of a vector.
 
 {% highlight cpp %}
 using MyVector = Vector<Vec<0,0>,Vec<1,1>,Vec<2,2>,Vec<3,3>>;
@@ -331,7 +331,7 @@ Clang, for example, will output this
  using Test = MyVector::Test;
 {% endhighlight %}
 
-And GCC will do something close. Another way is to use static_assert, it's just like a classic assert but at compile-time, so it takes a constant expression and if it resolves to true then it's ignored, if it's false whoever, it will output an error and potentially stop.
+And GCC will do something close. Another way is to use static_assert, it's just like a classic assert but at compile-time, so it takes a constant expression and if it resolves to true then it's ignored, if it's false however, it will output an error and potentially stop.
 
 So I could do this to verify that the size member of my vector is correct
 
@@ -342,7 +342,7 @@ static_assert(MyVector::Size == 4);
 
 Thus, if I made an error somewhere, I will immediately know.
 I made a couple of test cases as I was adding various functions.
-The define is because this is all C++14 conformant and the C++14 static_assert version requires a string as second parameter to output in case of failure, in C++17 it is optional. To make my life easier, I made that macro that just put an empty string for me.
+The define is because this is all C++14 conformant and the C++14 static_assert version requires a string as second parameter to output in case of failure, in C++17 it is optional. To make my life easier, I made that macro that just put an empty string there for me.
 
 Here's some part of my tests.
 
@@ -409,7 +409,7 @@ The complete and final code is [available on github](https://github.com/lapinozz
 
 ## It's nice and all that but how do you know it actually works?
 
-Excellent question! As I showed earlier, we can force the compiler to output the final path, then I extract that path using a regex `.*?(Vec<(\d+), (\d+)>).*?` and replace with ` {$2,$3}, \n` so that 
+Excellent question! As I showed earlier, we can force the compiler to output the final path, then I extract that path using a regex `.*?(Vec<(\d+), (\d+)>).*?` and replace with `​{$2,$3}, \n` so that 
 
 {% highlight txt %}
 668 : <source>:668:21: error: no type named 'Test' in 'Vector<Vec<0, 0>, Vec<1, 0>, Vec<2, 0>, Vec<3, 0>, Vec<4, 0>, Vec<5, 0>, Vec<6, 0>, Vec<7, 0>, Vec<7, 1>, Vec<7, 2>, Vec<7, 3>, Vec<7, 4>, Vec<7, 5>, Vec<7, 6>, Vec<7, 7>, Vec<6, 7>, Vec<5, 7>, Vec<5, 6>, Vec<5, 5>, Vec<5, 4>, Vec<5, 3>, Vec<5, 2>, Vec<4, 2>, Vec<3, 2>, Vec<2, 2>, Vec<2, 3> >'
@@ -517,7 +517,7 @@ Finally, I run this program using [Cpp Shell](cpp.sh) and it outputs the map and
 
 ## Conclusion
 
-This was pretty fun to write, even thought it can't really be used in real world code I still learned a lot of tricks that can be useful during real development. I also find amazing that I was able to write everything on the web, in my web browser, it was really easy and practically pain free.
+This was pretty fun to write, even thought it can't really be used in real world code I still learned a lot of tricks that can be useful during real development. I also find it amazing that I was able to write everything on the web, in my web browser, it was really easy and practically pain free.
 
 Thank you for reading I hope you did enjoy.  
 As always comments are welcome and appreciated!
