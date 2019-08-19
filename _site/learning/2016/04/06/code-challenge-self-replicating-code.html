@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <!---
+  Spaghetti Base Redesign
+  -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Code Challenge - Self Replicating Code</title>
+  <meta name="description" content="Quine">
+  <meta name="google-site-verification" content="WWP0tS0N_Dm8-FTd9oqyZta0oRCDYUFy24R7zSm06Vs" />
+  <meta name="msvalidate.01" content="779064655F047D704FFFD2122C3591F3" />
+  <link rel="stylesheet" href="/assets/css/alternative.css">
+  <link rel="stylesheet" href="/assets/css/syntax.css">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/typicons/2.0.7/typicons.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/octicons/3.4.1/octicons.min.css" rel="stylesheet">
+  <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+  
+  <link rel="canonical" href="http://localhost:4000/learning/2016/04/06/code-challenge-self-replicating-code.html">
+  <link rel="alternate" type="application/rss+xml" title="Placeholder" href="http://localhost:4000/feed.xml">
+
+
+<! google analytic >
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-74344870-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+<! strike through >
+<script>
+(function() {
+  function strikethrough(){
+    document.body.innerHTML = document.body.innerHTML.replace(
+      /\~\~(.+?)\~\~/gim,
+      '<del>$1</del>'
+    );
+    
+  }
+  strikethrough();
+})();
+</script>
+
+</head>
+
+
+  <Body>
+
+    <header class="site-header">
+  <div class="wrapper">
+<div class="pacel "><div class="pace-progress" data-progress-text="100%" data-progress="99" style="transform: translate3d(100%, 0px, 0px);">
+  <div class="pace-progress-inner"></div>
+</div>
+<div class="pace-activity"></div></div>
+  <a id="route" class="site-title" href="/">Placeholder<div style="margin: 3px 20px; font-size: 15px; float: right; white-space: pre; display:inline-block">//TODO: F̶i̶n̶d̶ ̶a̶ ̶n̶a̶m̶e̶  delete this todo</div></a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          
+          
+        
+          
+          
+          <a id="route" class="page-link" href="/about.html">About</a>
+          
+          
+        
+          
+          
+          <a id="route" class="page-link" href="/archive.html">Archive</a>
+          
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          
+          <a id="route" class="page-link" href="/project.html">Project</a>
+          
+          
+        
+          
+        
+          
+        
+          
+          
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="http://lapinozz.github.io/feed.xml"> Feeds</a>
+        <a class="page-link" href="http://github.com/lapinozz?tab=repositories"><i class="typico typcn typcn-social-github" style="font-size:"></i> Repositories</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div style="margin: 4.5rem auto;">
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="inpost-header">
+    <h1 class="inpost-title" itemprop="name headline">Code Challenge - Self Replicating Code</h1>
+    <div style="float:right">
+    <h1>
+     <i class="typico typcn typcn-messages" style="    position: relative;
+    top: 0px;
+    font-size: 25px;"></i> <a class="disqus-comment-count" href="#disqus_thread" data-disqus-identifier="/learning/2016/04/06/code-challenge-self-replicating-code" style="color:#fff"> 0</a>
+    </h1>
+    
+  </div>
+    
+   
+    
+
+ 
+ 
+  
+
+    
+    
+    </p>
+  
+  </header>
+  
+  
+  
+  
+  <div class="post-content" itemprop="articleBody">
+    <h1 id="quine">Quine</h1>
+
+<p>A program that outputs its own source code, preferably without reading a file, is called a Quine. One of the simplest example is as follows</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="cp">#include&lt;stdio.h&gt;
+</span><span class="n">main</span><span class="p">(){</span><span class="kt">char</span><span class="o">*</span><span class="n">a</span><span class="o">=</span><span class="s">"#include&lt;stdio.h&gt;%cmain(){char*a=%c%s%c;printf(a,10,34,a,34);}"</span><span class="p">;</span><span class="n">printf</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">34</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="mi">34</span><span class="p">);}</span></code></pre></figure>
+
+<p>This is the base I used for this challenge.</p>
+
+<h1 id="the-constraint">The constraint</h1>
+
+<p>Just like for <a href="http://lapinozz.github.io/learning/2016/03/13/math-expression-evaluator.html">the math expression parser challenge</a> I was on the <abbr title="Internet Relay Chat">IRC</abbr> server boxbox.org but this time on the channel #sfml where multiple bot are present. The idea had come multiple time to try and create a loop between multiple bot. After some time someone stumbled across #two command of two bot that made them intereact, to understand this process you have to know that most bot where ignoring each other and ignoring their own messages. Once the commands found the real challenge could start, writing a self replicating code that could fit with them! Two bots were needed for the completion of this self imposed challenge.</p>
+
+<h1 id="cee">Cee</h1>
+
+<p>Cee let you execute arbitrary C++ code. There are four ways to invoke the execution of code. Note that you can not use preprocessor command and that most header will be added for you.</p>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">.g++ &lt;&lt; "Something"</code></p>
+
+    <p>Cee will automaticly put the code following the “«” in a <code class="highlighter-rouge">std::cout &lt;&lt; _your code_ &lt;&lt; std::endl inside of main</code></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">.g++ {int i; cout &lt;&lt; i}</code></p>
+
+    <p>Cee will add <code class="highlighter-rouge">int main()</code> at the begining for you</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">.g++ int main(){}</code></p>
+
+    <p>Here Cee will only add the security code and the include</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">cee: &lt;&lt; "Something"</code></p>
+
+    <p>this is the part that interess us</p>
+  </li>
+</ul>
+
+<h1 id="marybeth">Marybeth</h1>
+
+<p>Marybeth is a multipurpose bot, for this we only need one of her command. The <code class="highlighter-rouge">.in</code> command let you set a reminder ex: <code class="highlighter-rouge">.in 10m pasta is ready</code> and in 10 minutes Marybeth will print <code class="highlighter-rouge">yourNick: pasta is ready</code></p>
+
+<h1 id="the-trick">The trick</h1>
+
+<p>If you send <code class="highlighter-rouge">.g++ &lt;&lt; ".in 1s &lt;&lt; \".in 1s nearly recursion!\""</code></p>
+
+<p>First cee will output <code class="highlighter-rouge">.in 1s &lt;&lt; ".in 1s nearly recursion!"</code></p>
+
+<p>One second later Marybeth will output <code class="highlighter-rouge">cee: &lt;&lt; ".in 1s nearly recursion!"</code></p>
+
+<p>Which make cee output <code class="highlighter-rouge">.in 1s nearly recursion!</code></p>
+
+<p>And at last one second later Marybeth print <code class="highlighter-rouge">cee: nearly recursion!</code></p>
+
+<p>The problem with this code is that if you want the loop to happen 10 times you have to make the code 10 times longer and it will still end. That’s where we need Quine!</p>
+
+<h1 id="the-code">The Code</h1>
+
+<p>The problem is that every Quine I could find or think of required to store a string in some kind of variable. The code need to be inserted inside <code class="highlighter-rouge">cout &lt;&lt; *here* &lt;&lt; endl</code> and you can’t really create a variable in that statement. So I searched for something in the STL where I could store a <code class="highlighter-rouge">char*</code> and retrieve it twice, that’s all I needed but no matter what I could not find anything. Then I finally found, the rdbuf function of ios, <code class="highlighter-rouge">ios::rdbuf</code>.</p>
+
+<p>It takes a <code class="highlighter-rouge">streambuf*</code>, what a <code class="highlighter-rouge">streambuf</code> is is completely irrevelante to our purpose. I simply cast <code class="highlighter-rouge">char*</code> to <code class="highlighter-rouge">streambuf*</code> to store it and <code class="highlighter-rouge">streambuf*</code> to <code class="highlighter-rouge">char*</code> when retrieving. Of course, this is entirely horrible and is absolutely not to use in real code. Note that if the code were to use cin, it would most likely crash.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="c1">//Note: I added new line to "help" readability
+</span><span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">cin</span><span class="p">.</span><span class="n">rdbuf</span><span class="p">((</span><span class="n">streambuf</span><span class="o">*</span><span class="p">)</span><span class="s">".in 2s &lt;&lt; (cin.rdbuf((streambuf*)%c%s%c),</span><span class="err">
+</span><span class="s">printf((char*)cin.rdbuf(),34, (char*)cin.rdbuf(), 34),(char)0)"</span><span class="p">),</span>
+<span class="n">printf</span><span class="p">((</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">cin</span><span class="p">.</span><span class="n">rdbuf</span><span class="p">(),</span><span class="mi">34</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">cin</span><span class="p">.</span><span class="n">rdbuf</span><span class="p">(),</span> <span class="mi">34</span><span class="p">),(</span><span class="kt">char</span><span class="p">)</span><span class="mi">0</span><span class="p">)</span></code></pre></figure>
+
+<p>It works pretty much like the first example but modified to work with commands and the rdbuf trick.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>Maybe this a bit confusing or you don’t care for those bots commands, if so, sorry about that. For myself this is the kind of challenge I like. Exploring the concept of quine and their implications was quite instructing. I hope you had has much fun as I did reading this beautiful code.</p>
+
+
+  </div>
+
+
+
+<div class="arrowNav">
+ 
+ 
+<div class="arrowLeft">
+<a id="route" class="tooltip-right" href="/learning/2016/06/07/lazy-theta-star-pathfinding.html" title="
+&lt;p class=hoveratas&gt;Lazy Theta* Any Angle Pathfinding&lt;/p&gt; &lt;p class=hoverbawah&gt;# Any angle pathfinding To get smooth path there is...&lt;/p&gt;
+"><i class="typcn typcn-chevron-left" style="    font-size: 30px;
+    position: relative;
+   
+    "></i></a>
+</div>
+
+
+ 
+<div class="arrowRight" style="float:right">
+<a id="route" class="tooltip-left" href="/project/2016/03/31/game-developement-in-assembly.html" title="
+&lt;p class=hoveratas&gt;Game developement in Assembly&lt;/p&gt; &lt;p class=hoverbawah&gt;Why? Why would you make a game in Assembly? This...&lt;/p&gt;
+"><i class="typcn typcn-chevron-right" style="    font-size: 30px;
+    position: relative;
+   
+    "></i></a>
+</div>
+
+</div>
+
+
+  <p class="post-meta" style="    background: #00bc8c;
+    padding: 15px 0px 15px 20px;"><time datetime="2016-04-06T09:22:23-04:00" itemprop="datePublished"><i class="typcn typcn-calendar-outline"></i> Apr 6, 2016</time> 
+    |
+  
+  <a href="/tags/#C++" style="color: #fff;"><i class="typcn typcn-tags"></i> C++</a>
+  
+  <a href="/tags/#IRC" style="color: #fff;"><i class="typcn typcn-tags"></i> IRC</a>
+  
+  <a href="/tags/#Quine" style="color: #fff;"><i class="typcn typcn-tags"></i> Quine</a>
+  
+  <a href="/tags/#Challenge" style="color: #fff;"><i class="typcn typcn-tags"></i> Challenge</a>
+  
+  
+  
+
+</article>
+
+
+
+
+
+<style>
+    #disqus_thread {
+  overflow: hidden;
+
+  iframe {
+    margin-bottom: -54px;
+  }
+}
+</style>
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+		this.page.url = 'http://localhost:4000/learning/2016/04/06/code-challenge-self-replicating-code';
+		this.page.identifier = '/learning/2016/04/06/code-challenge-self-replicating-code';
+	};
+    
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//theplaceholder.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+</div>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+  <div class="wrapper">
+    <h2 class="footer-heading">Placeholder</h2>
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Lapinozz Thech Blog</li>
+          <li><a href="mailto:monstrefou@gmail.com">monstrefou@gmail.com</a></li>
+        </ul>
+      </div>
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/lapinozz"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">lapinozz</span></a>
+
+          </li>
+          
+          
+          
+
+          
+        </ul>
+      </div>
+      <div class="footer-col footer-col-3">
+        <p>Designed by Spaghetti</p>
+        <p>Proudly hosted by <a href="https://pages.github.com/" target="_blank"><span class="octicon octicon-logo-github" style="color: #828282;
+    position: relative;
+    top: 4px;
+    left: 3px;
+    font-size: 20px;"></span></a></p>
+      </div>
+    </div>
+  </div>
+</footer>
+<!--- Where Javascript Loaded --->
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://iamceege.github.io/tooltipster/js/jquery.tooltipster.js"></script>
+<script>
+$(document).ready(function() {
+	if(location.pathname != "/") {
+		$('.trigger a[href^="/' + location.pathname.split("/")[1] + '"]').addClass('active');
+	} else $('.none a:eq(0)').addClass('active');
+});
+
+</script>
+  <script>
+        $(document).ready(function() {
+            $('.tooltip-right').tooltipster({
+                contentAsHTML: true,
+                position: 'right',
+            });
+        });
+        $(document).ready(function() {
+            $('.tooltip-left').tooltipster({
+                contentAsHTML: true,
+                position: 'left',
+            });
+        });
+
+        document.body.innerHTML = document.body.innerHTML.replace(
+          /\’/gim,
+          '\''
+        );
+    </script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.pjax/1.9.6/jquery.pjax.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+<script type="text/javascript" src="/assets/js/jquery-autocomplete.js"></script>
+<script src="/assets/js/responsive_waterfall.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+<script>
+
+
+$(document).ready(function(){$(".menu-icon").click(function(){$(".trigger").toggle()})}),$(function(){$(document).pjax("#route","body",{fragment:"body",timeout:1e5,scrollTo:0,push:!0,maxCacheLength:20,replace:!1})}),$(document).on("pjax:error",function(e,n,t,o,c){return c.success(n.responseText,t,n),!1});var options={url:"/gblk.json",getValue:"title",list:{match:{enabled:!0,maxNumberOfElements:5}},template:{type:"links",fields:{link:"url"}},theme:"square"};$("#countries").easyAutocomplete(options),Pace.on("start",function(){$(".pacel").show()}),Pace.on("done",function(){$(".pacel").hide()}),$(function(){$("img").lazyload({})});var waterfall=new Waterfall({containerSelector:".wf-container",boxSelector:".wf-box",minBoxWidth:180});$(document).ready(function(){$(".menu-icon").click(function(){$(".trigger").toggle()})});
+       
+</script>
+<script id="dsq-count-scr" src="//theplaceholder.disqus.com/count.js" async></script>
+
+
+  </Body>
+
+</html>

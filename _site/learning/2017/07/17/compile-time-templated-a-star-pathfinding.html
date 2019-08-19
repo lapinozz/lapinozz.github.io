@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <!---
+  Spaghetti Base Redesign
+  -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Compile-time templated A* pathfinding in C++14</title>
+  <meta name="description" content="What is this?">
+  <meta name="google-site-verification" content="WWP0tS0N_Dm8-FTd9oqyZta0oRCDYUFy24R7zSm06Vs" />
+  <meta name="msvalidate.01" content="779064655F047D704FFFD2122C3591F3" />
+  <link rel="stylesheet" href="/assets/css/alternative.css">
+  <link rel="stylesheet" href="/assets/css/syntax.css">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/typicons/2.0.7/typicons.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/octicons/3.4.1/octicons.min.css" rel="stylesheet">
+  <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+  
+  <link rel="canonical" href="http://localhost:4000/learning/2017/07/17/compile-time-templated-a-star-pathfinding.html">
+  <link rel="alternate" type="application/rss+xml" title="Placeholder" href="http://localhost:4000/feed.xml">
+
+
+<! google analytic >
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-74344870-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+<! strike through >
+<script>
+(function() {
+  function strikethrough(){
+    document.body.innerHTML = document.body.innerHTML.replace(
+      /\~\~(.+?)\~\~/gim,
+      '<del>$1</del>'
+    );
+    
+  }
+  strikethrough();
+})();
+</script>
+
+</head>
+
+
+  <Body>
+
+    <header class="site-header">
+  <div class="wrapper">
+<div class="pacel "><div class="pace-progress" data-progress-text="100%" data-progress="99" style="transform: translate3d(100%, 0px, 0px);">
+  <div class="pace-progress-inner"></div>
+</div>
+<div class="pace-activity"></div></div>
+  <a id="route" class="site-title" href="/">Placeholder<div style="margin: 3px 20px; font-size: 15px; float: right; white-space: pre; display:inline-block">//TODO: F̶i̶n̶d̶ ̶a̶ ̶n̶a̶m̶e̶  delete this todo</div></a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          
+          
+        
+          
+          
+          <a id="route" class="page-link" href="/about.html">About</a>
+          
+          
+        
+          
+          
+          <a id="route" class="page-link" href="/archive.html">Archive</a>
+          
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          
+          <a id="route" class="page-link" href="/project.html">Project</a>
+          
+          
+        
+          
+        
+          
+        
+          
+          
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="http://lapinozz.github.io/feed.xml"> Feeds</a>
+        <a class="page-link" href="http://github.com/lapinozz?tab=repositories"><i class="typico typcn typcn-social-github" style="font-size:"></i> Repositories</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div style="margin: 4.5rem auto;">
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="inpost-header">
+    <h1 class="inpost-title" itemprop="name headline">Compile-time templated A* pathfinding in C++14</h1>
+    <div style="float:right">
+    <h1>
+     <i class="typico typcn typcn-messages" style="    position: relative;
+    top: 0px;
+    font-size: 25px;"></i> <a class="disqus-comment-count" href="#disqus_thread" data-disqus-identifier="/learning/2017/07/17/compile-time-templated-a-star-pathfinding" style="color:#fff"> 0</a>
+    </h1>
+    
+  </div>
+    
+   
+    
+
+ 
+ 
+  
+
+    
+    
+    </p>
+  
+  </header>
+  
+  
+  
+  
+  <div class="post-content" itemprop="articleBody">
+    <h1 id="what-is-this">What is this?</h1>
+
+<p>In simple terms, a complete mess. More concretely, it’s a piece of code that I wrote which computes a path using the A* algorithm and works entirely at compile-time, that is, all computations are done by the compiler and nothing is done at runtime. So at the end, the executable only contains the result, in this case, the path.</p>
+
+<h1 id="inspiration">Inspiration</h1>
+
+<p>I asked my good friend Nyrox on the #sfml IRC channel for a compile-time challenge to my measure.<br />
+He finally suggested doing A* pathfinding and I gladly took the challenge.</p>
+
+<h1 id="tools">Tools</h1>
+
+<p>To help me in my task I used the superb <a href="http://www.godbolt.org">Compiler Explorer</a>. It lets you choose between a vast selection of compilers and versions and continuously tries to compile your program as you type it. When your program compiles, it shows the resulting assembly on the right, it’s really practical when doing. At the end I also used <a href="http://www.regex101.com">Regex101</a> to quickly filter part of the compiler output. Finally, I used <a href="http://www.cpp.sh">C++ Shell</a> which lets you execute C++ code online.</p>
+
+<h2 id="code">Code</h2>
+
+<p>Let’s dive right in!
+For those who just want to see the code, <a href="https://github.com/lapinozz/CompileTime-Pathfinding/blob/master/main.cpp">here’s the link</a>.</p>
+
+<h1 id="starting-simple-vec-class">Starting simple, Vec class</h1>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">template</span><span class="o">&lt;</span><span class="kt">int</span> <span class="n">X</span><span class="p">,</span> <span class="kt">int</span> <span class="n">Y</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">Vec</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">X</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">Y</span><span class="p">;</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>There we go, a simple templated class, I use it to store a position on the map. For example <code class="highlighter-rouge">Vec&lt;4, 5&gt; v;</code> would create an instance, but in this project I almost only work with type, so I would more likely write <code class="highlighter-rouge">using V = Vec&lt;4, 5&gt;;</code> which is a type alias declaration. I can then access the value like this <code class="highlighter-rouge">V::x</code>.</p>
+
+<p>I want to do pathfinding in a 2D map and I will store this map as a 1D array, so I need a way to map 2D coordinates, which I’ll call Vec now, to a 1D coordinate, which I’ll call Index.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">template</span><span class="o">&lt;</span><span class="kt">int</span> <span class="n">X</span><span class="p">,</span> <span class="kt">int</span> <span class="n">Y</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">Vec</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">X</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">Y</span><span class="p">;</span>
+    
+    <span class="k">template</span><span class="o">&lt;</span><span class="kt">int</span> <span class="n">sizeX</span><span class="o">&gt;</span>
+    <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">Index</span> <span class="o">=</span> <span class="n">Y</span> <span class="o">*</span> <span class="n">sizeX</span> <span class="o">+</span> <span class="n">X</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>I basically declare a templated variable that is static, so that it is not part of an instance but of the class itself, and constexpr, so that it can be used in a constant expression and thus at compile-time. If any of those terms are unknown to you, I suggest researching and experimenting with them as it is the best way to learn. Also this is not a tutorial about template haxery but merely an overview of my experiment.</p>
+
+<p>Assuming that the horizontal size of my map is 10, I’d use it like this <code class="highlighter-rouge">int Index = V::Index&lt;10&gt;;</code>.</p>
+
+<p>Of course we also need to do the opposite operation, going from Index to Vec:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">template</span><span class="o">&lt;</span><span class="kt">int</span> <span class="n">sizeX</span><span class="p">,</span> <span class="kt">int</span> <span class="n">Index</span><span class="o">&gt;</span>
+<span class="k">using</span> <span class="n">FromIndex</span> <span class="o">=</span> <span class="n">Vec</span><span class="o">&lt;</span><span class="n">Index</span> <span class="o">%</span> <span class="n">sizeX</span><span class="p">,</span> <span class="n">Index</span> <span class="o">/</span> <span class="n">sizeX</span><span class="o">&gt;</span><span class="p">;</span></code></pre></figure>
+
+<p>And using it is as easy as <code class="highlighter-rouge">using V = FromIndex&lt;10, _IndexHere_&gt;;</code></p>
+
+<p>It will also be handy further down the road to get the neighbors of this Vec:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">template</span><span class="o">&lt;</span><span class="kt">int</span> <span class="n">X</span><span class="p">,</span> <span class="kt">int</span> <span class="n">Y</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">Vec</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">X</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">Y</span><span class="p">;</span>
+    
+    <span class="k">template</span><span class="o">&lt;</span><span class="kt">int</span> <span class="n">sizeX</span><span class="o">&gt;</span>
+    <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">Index</span> <span class="o">=</span> <span class="n">Y</span> <span class="o">*</span> <span class="n">sizeX</span> <span class="o">+</span> <span class="n">X</span><span class="p">;</span>
+    
+    <span class="k">using</span> <span class="n">Up</span> <span class="o">=</span>    <span class="n">Vec</span><span class="o">&lt;</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">-</span> <span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
+    <span class="k">using</span> <span class="n">Down</span> <span class="o">=</span>  <span class="n">Vec</span><span class="o">&lt;</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">+</span> <span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
+    <span class="k">using</span> <span class="n">Left</span> <span class="o">=</span>  <span class="n">Vec</span><span class="o">&lt;</span><span class="n">X</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Y</span><span class="o">&gt;</span><span class="p">;</span>
+    <span class="k">using</span> <span class="n">Right</span> <span class="o">=</span> <span class="n">Vec</span><span class="o">&lt;</span><span class="n">X</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Y</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<h1 id="vector">Vector</h1>
+
+<p>Now that I have some Vec I need a way to hold them in an array, so I implemented a Vector class.
+I won’t cover every line, it’s not trivial but with the “function” name, and some serious dedication, understanding the code should be possible. It is probably not the best way to do those things anyways, I wanted something that worked, coding features as I needed them, once they worked reasonably well and the code was not too terrible, I just moved on.</p>
+
+<p>With that in mind, feel free to inspire yourself from it or suggest improvements.</p>
+
+<p>Note that, as to not make the post too long and boring, I removed most functions of the following code. In the complete code you can find functions such as <code class="highlighter-rouge">PopBack</code>, <code class="highlighter-rouge">Find</code>, <code class="highlighter-rouge">Transform</code>, <code class="highlighter-rouge">Get</code>, <code class="highlighter-rouge">Remove</code> and so on.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">Vector</span>
+<span class="p">{</span>
+    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span><span class="n">V</span><span class="o">&gt;</span>
+    <span class="k">using</span> <span class="n">PushFront</span> <span class="o">=</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">V</span><span class="p">...,</span> <span class="n">T</span><span class="p">...</span><span class="o">&gt;</span><span class="p">;</span>
+
+    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span><span class="n">V</span><span class="o">&gt;</span>
+    <span class="k">using</span> <span class="n">PushBack</span> <span class="o">=</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">T</span><span class="p">...,</span> <span class="n">V</span><span class="p">...</span><span class="o">&gt;</span><span class="p">;</span>
+
+    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
+    <span class="k">struct</span> <span class="n">Insert</span>
+    <span class="p">{</span>
+        <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="o">&gt;</span>
+        <span class="k">struct</span> <span class="n">Impl</span><span class="p">;</span>
+        
+        <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span><span class="n">Vs</span><span class="o">&gt;</span>
+        <span class="k">struct</span> <span class="n">Impl</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">Vs</span><span class="p">...</span><span class="o">&gt;&gt;</span>
+        <span class="p">{</span>
+            <span class="k">using</span> <span class="n">Type</span> <span class="o">=</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">T</span><span class="p">...,</span> <span class="n">Vs</span><span class="p">...</span><span class="o">&gt;</span><span class="p">;</span>
+        <span class="p">};</span>
+
+        <span class="k">using</span> <span class="n">Type</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">Impl</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;::</span><span class="n">Type</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
+    <span class="k">using</span> <span class="n">insert</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">Insert</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;::</span><span class="n">Type</span><span class="p">;</span>
+<span class="p">};</span></code></pre></figure>
+
+<h1 id="note-on-my-synthax">Note on my synthax</h1>
+
+<p>You might have noticed I declare my “function” in a strange way, look at the insert <em>function</em>:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp">    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
+    <span class="k">struct</span> <span class="n">Insert</span>
+    <span class="p">{</span>
+        <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="o">&gt;</span>
+        <span class="k">struct</span> <span class="n">Impl</span><span class="p">;</span>
+        
+        <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span><span class="n">Vs</span><span class="o">&gt;</span>
+        <span class="k">struct</span> <span class="n">Impl</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">Vs</span><span class="p">...</span><span class="o">&gt;&gt;</span>
+        <span class="p">{</span>
+            <span class="k">using</span> <span class="n">Type</span> <span class="o">=</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">T</span><span class="p">...,</span> <span class="n">Vs</span><span class="p">...</span><span class="o">&gt;</span><span class="p">;</span>
+        <span class="p">};</span>
+
+        <span class="k">using</span> <span class="n">Type</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">Impl</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;::</span><span class="n">Type</span><span class="p">;</span>
+    <span class="p">};</span></code></pre></figure>
+
+<p>I just feel like it’s less of a mess when I write it this way, it feels more “contained”, it’s simply a personal preference, I could also write it in a more “normal” way:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp">    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
+    <span class="k">struct</span> <span class="n">Insert</span><span class="p">;</span>
+    
+    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span><span class="n">Vs</span><span class="o">&gt;</span>
+    <span class="k">struct</span> <span class="n">Insert</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">Vs</span><span class="p">...</span><span class="o">&gt;&gt;</span>
+    <span class="p">{</span>
+        <span class="k">using</span> <span class="n">Type</span> <span class="o">=</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">T</span><span class="p">...,</span> <span class="n">Vs</span><span class="p">...</span><span class="o">&gt;</span><span class="p">;</span>
+    <span class="p">};</span></code></pre></figure>
+
+<p>It is way less typing in this case, and I would guess it compiles faster, I didn’t do any benchmark in this regard yet. <br />
+Let me know what you think of it!</p>
+
+<p>I also define aliases in lower case that are easier to call so rather than doing <code class="highlighter-rouge">MyVec::Insert&lt;MyOtherVec&gt;::Type</code> I can do <code class="highlighter-rouge">MyVec::insert&lt;MyOtherVec&gt;</code>.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp">    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">V</span><span class="o">&gt;</span>
+    <span class="k">using</span> <span class="n">insert</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">Insert</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;::</span><span class="n">Type</span><span class="p">;</span></code></pre></figure>
+
+<h1 id="bad-bad-vector">Bad, bad Vector</h1>
+
+<p>In itself, this class works well, you can do fun stuff at compile time, hold any kind of type and insert, remove, find them, etc. But there is a problem, it only holds <em>Types</em>, so no int or any kind of value. And I want my final map to be made of chars, how to solve it?</p>
+
+<p>The solution is simple, make a type that has the sole purpose of holding a value:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span> <span class="n">Value</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">ValueHolder</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="n">Type</span> <span class="o">=</span> <span class="n">T</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">constexpr</span> <span class="n">T</span> <span class="n">value</span> <span class="o">=</span> <span class="n">Value</span><span class="p">;</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>Now I can hold a value, a 5 as an int for example <code class="highlighter-rouge">ValueHolder&lt;int, 5&gt;</code>. But it’s still extremely annoying to always have to care about the ValueHolder and such. So I made an overload for values, this way I can push, remove, and find value using the exact same syntax as I would with types.</p>
+
+<p>Again, I removed most functions, this time I left <code class="highlighter-rouge">Find</code>.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span><span class="kt">bool</span> <span class="n">ForceGeneric</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">VectorImpl</span><span class="p">;</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span><span class="n">T</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">Vector</span> <span class="o">:</span> <span class="k">public</span> <span class="n">VectorImpl</span><span class="o">&lt;</span><span class="nb">false</span><span class="p">,</span> <span class="n">T</span><span class="p">...</span><span class="o">&gt;</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">Size</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">...(</span><span class="n">T</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="kt">bool</span> <span class="n">ForceGeneric</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">VectorImpl</span>
+<span class="p">{</span>
+    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">V</span><span class="p">,</span> <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="p">,</span> <span class="k">typename</span><span class="o">&gt;</span> <span class="k">class</span> <span class="nc">Condition</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">is_same</span><span class="o">&gt;</span>
+    <span class="k">struct</span> <span class="n">Find</span>
+    <span class="p">{</span>
+        <span class="k">template</span> <span class="o">&lt;</span><span class="kt">int</span> <span class="n">CurrentIndex</span><span class="p">,</span> <span class="k">typename</span> <span class="n">Current</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span><span class="n">I</span><span class="o">&gt;</span>
+        <span class="k">struct</span> <span class="n">Impl</span>
+        <span class="p">{</span>
+            <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">Index</span> <span class="o">=</span> <span class="n">Condition</span><span class="o">&lt;</span><span class="n">Current</span><span class="p">,</span> <span class="n">V</span><span class="o">&gt;::</span><span class="n">value</span> <span class="o">?</span> <span class="n">CurrentIndex</span> <span class="o">:</span> <span class="n">Impl</span><span class="o">&lt;</span><span class="n">CurrentIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">I</span><span class="p">...</span><span class="o">&gt;::</span><span class="n">Index</span><span class="p">;</span>
+        <span class="p">};</span>
+
+        <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">Current</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span><span class="n">I</span><span class="o">&gt;</span>
+        <span class="k">struct</span> <span class="n">Impl</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">T</span><span class="p">...</span><span class="o">&gt;::</span><span class="n">Size</span><span class="p">,</span> <span class="n">Current</span><span class="p">,</span> <span class="n">I</span><span class="p">...</span><span class="o">&gt;</span>
+        <span class="p">{</span>
+            <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">Index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="p">};</span>
+
+        <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">Index</span> <span class="o">=</span> <span class="n">Impl</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">...,</span> <span class="n">IgnoreT</span><span class="o">&gt;::</span><span class="n">Index</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">V</span><span class="p">,</span> <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="p">,</span> <span class="k">typename</span><span class="o">&gt;</span> <span class="k">class</span> <span class="nc">Condition</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">is_same</span><span class="o">&gt;</span>
+    <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">find</span> <span class="o">=</span> <span class="n">Find</span><span class="o">&lt;</span><span class="n">V</span><span class="p">,</span> <span class="n">Condition</span><span class="o">&gt;::</span><span class="n">Index</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">...</span><span class="n">V</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">VectorImpl</span><span class="o">&lt;</span><span class="nb">false</span><span class="p">,</span> <span class="n">ValueHolder</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">V</span><span class="o">&gt;</span><span class="p">...</span><span class="o">&gt;</span> <span class="o">:</span> <span class="k">public</span> <span class="n">VectorImpl</span><span class="o">&lt;</span><span class="nb">true</span><span class="p">,</span> <span class="n">ValueHolder</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">V</span><span class="o">&gt;</span><span class="p">...</span><span class="o">&gt;</span>
+<span class="p">{</span>
+    <span class="k">template</span><span class="o">&lt;</span><span class="n">T</span> <span class="n">Value</span><span class="p">,</span> <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="p">,</span> <span class="k">typename</span><span class="o">&gt;</span> <span class="k">class</span> <span class="nc">Condition</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">is_same</span><span class="o">&gt;</span>
+    <span class="k">struct</span> <span class="n">Find</span>
+    <span class="p">{</span>
+        <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">Left</span><span class="p">,</span> <span class="k">typename</span> <span class="n">Right</span><span class="o">&gt;</span>
+        <span class="k">struct</span> <span class="n">ConditionWrapper</span><span class="p">;</span>
+
+        <span class="k">template</span><span class="o">&lt;</span><span class="n">T</span> <span class="n">Left</span><span class="p">,</span> <span class="n">T</span> <span class="n">Right</span><span class="o">&gt;</span>
+        <span class="k">struct</span> <span class="n">ConditionWrapper</span><span class="o">&lt;</span><span class="n">ValueHolder</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">Left</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">ValueHolder</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">Right</span><span class="o">&gt;&gt;</span>
+        <span class="p">{</span>
+            <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">value</span> <span class="o">=</span> <span class="n">Left</span> <span class="o">==</span> <span class="n">Right</span><span class="p">;</span>
+        <span class="p">};</span>
+
+        <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">Index</span> <span class="o">=</span> <span class="n">vecImpl</span><span class="o">::</span><span class="k">template</span> <span class="n">Find</span><span class="o">&lt;</span><span class="n">ValueHolder</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">Value</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">ConditionWrapper</span><span class="o">&gt;::</span><span class="n">Index</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">template</span><span class="o">&lt;</span><span class="n">T</span> <span class="n">Value</span><span class="p">,</span> <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="p">,</span> <span class="k">typename</span><span class="o">&gt;</span> <span class="k">class</span> <span class="nc">Condition</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">is_same</span><span class="o">&gt;</span>
+    <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">find</span> <span class="o">=</span> <span class="n">Find</span><span class="o">&lt;</span><span class="n">Value</span><span class="p">,</span> <span class="n">Condition</span><span class="o">&gt;::</span><span class="n">Index</span><span class="p">;</span>
+<span class="p">};</span></code></pre></figure>
+
+<h1 id="map">Map</h1>
+
+<p>The map itself is just inheriting from vector and simply adds a function to get a value from a coordinate and holds the horizontal size</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">template</span><span class="o">&lt;</span><span class="kt">int</span> <span class="n">SizeX</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span><span class="n">T</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">Map</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">T</span><span class="p">...</span><span class="o">&gt;</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="n">GetVector</span> <span class="o">=</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">T</span><span class="p">...</span><span class="o">&gt;</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">sizeX</span> <span class="o">=</span> <span class="n">SizeX</span><span class="p">;</span>
+
+    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">VecT</span><span class="o">&gt;</span>
+    <span class="k">struct</span> <span class="n">GetFromPos</span>
+    <span class="p">{</span>
+        <span class="k">static</span> <span class="k">constexpr</span> <span class="k">auto</span> <span class="n">Value</span> <span class="o">=</span> <span class="n">GetVector</span><span class="o">::</span><span class="k">template</span> <span class="n">Get</span> <span class="o">&lt;</span><span class="n">VecT</span><span class="o">::</span><span class="k">template</span> <span class="n">Index</span><span class="o">&lt;</span><span class="n">SizeX</span><span class="o">&gt;</span> <span class="o">&gt;::</span><span class="n">Value</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">VecT</span><span class="o">&gt;</span>
+    <span class="k">static</span> <span class="k">constexpr</span> <span class="k">auto</span> <span class="n">getFromPos</span> <span class="o">=</span> <span class="n">GetFromPos</span><span class="o">&lt;</span><span class="n">VecT</span><span class="o">&gt;::</span><span class="n">Value</span><span class="p">;</span>
+<span class="p">};</span></code></pre></figure>
+
+<h1 id="node">Node</h1>
+
+<p>A* is implemented using nodes, which hold a pointer to its parent, the cost of its path so far, its heuristic cost and its position.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">template</span><span class="o">&lt;</span><span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="kt">int</span> <span class="n">G</span><span class="p">,</span> <span class="kt">int</span> <span class="n">H</span><span class="p">,</span> <span class="k">typename</span> <span class="n">ParentType</span> <span class="o">=</span> <span class="kt">void</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">Node</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">Index</span> <span class="o">=</span> <span class="n">index</span><span class="p">;</span>
+
+    <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">g</span> <span class="o">=</span> <span class="n">G</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">h</span> <span class="o">=</span> <span class="n">H</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">Cost</span> <span class="o">=</span> <span class="n">G</span><span class="o">*</span><span class="n">G</span> <span class="o">+</span> <span class="n">H</span><span class="p">;</span>
+
+    <span class="k">using</span> <span class="n">Parent</span> <span class="o">=</span> <span class="n">ParentType</span><span class="p">;</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>You might wonder why G is squared, it’s because my heuristic function takes two Vec and returns the distance between them squared. Sqrt is a real pain in template since we can’t use float at compile-time and it’s really easy to just represent every distance as squared distances!</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">Vec1</span><span class="p">,</span> <span class="k">typename</span> <span class="n">Vec2</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">Heuristic</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">X3</span> <span class="o">=</span> <span class="n">Vec2</span><span class="o">::</span><span class="n">x</span> <span class="o">-</span> <span class="n">Vec1</span><span class="o">::</span><span class="n">x</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">Y3</span> <span class="o">=</span> <span class="n">Vec2</span><span class="o">::</span><span class="n">y</span> <span class="o">-</span> <span class="n">Vec1</span><span class="o">::</span><span class="n">y</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">Value</span> <span class="o">=</span> <span class="n">X3</span> <span class="o">*</span> <span class="n">X3</span> <span class="o">+</span> <span class="n">Y3</span> <span class="o">*</span> <span class="n">Y3</span><span class="p">;</span>
+<span class="p">};</span></code></pre></figure>
+
+<h1 id="pathfinding">Pathfinding</h1>
+
+<p>I made an <code class="highlighter-rouge">AStar</code> class, in it there’s a couple of members which are the start value of the algorithm, so the start and end position, the openlist and closedlist, etc.</p>
+
+<p>Then I have a “function” called <code class="highlighter-rouge">BuildNeighbors</code> its role is to gather all the neighbor position of a node in a vector, removing all those are out of the map bounds. Then there is <code class="highlighter-rouge">FilterNeighbors</code> which removes the position that point to a wall or if a node with the same cost and position exists in the closedlist or openlist.</p>
+
+<p><code class="highlighter-rouge">MakePath</code> is the final function that takes the final node when the algorithm has reached the end position and unroll all its parents and puts all the position in a vector.</p>
+
+<p><code class="highlighter-rouge">MainLoop</code> is, well, the main loop, it takes the node with the least cost on the openlist, removes it from the list and find its neighbors using <code class="highlighter-rouge">BuildNeighbors</code>, filter them using <code class="highlighter-rouge">FilterNeighbors</code> and add them to the openlist. It then adds the least node to the closedlist and recurse, unless the least node position is equal to the end position, in which case it stops recursing and returns the result of <code class="highlighter-rouge">MakePath</code>.</p>
+
+<h1 id="debugging">Debugging</h1>
+
+<p>Many times during the development, things refused to work as intended, but I could not use a simple std::cout as I’m used to, because everything was at compile time. So I found a nice trick, you can force an “error” and hope that the compiler will throw you the information that you want. Here for example I want to know the content of a vector.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">using</span> <span class="n">MyVector</span> <span class="o">=</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">Vec</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">,</span><span class="n">Vec</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">,</span><span class="n">Vec</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">,</span><span class="n">Vec</span><span class="o">&lt;</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="o">&gt;&gt;</span><span class="p">;</span>
+<span class="k">using</span> <span class="n">Test</span> <span class="o">=</span> <span class="n">MyVector</span><span class="o">::</span><span class="n">Test</span><span class="p">;</span></code></pre></figure>
+
+<p>Clang, for example, will output this</p>
+
+<figure class="highlight"><pre><code class="language-txt" data-lang="txt">666 : &lt;source&gt;:666:24: error: 'Test' in 'using MyVector = struct Vector&lt;Vec&lt;0, 0&gt;, Vec&lt;1, 1&gt;, Vec&lt;2, 2&gt;, Vec&lt;3, 3&gt; &gt; {aka struct Vector&lt;Vec&lt;0, 0&gt;, Vec&lt;1, 1&gt;, Vec&lt;2, 2&gt;, Vec&lt;3, 3&gt; &gt;}' does not name a type
+ using Test = MyVector::Test;</code></pre></figure>
+
+<p>And GCC will do something close. Another way is to use static_assert, it’s just like a classic assert but at compile-time, so it takes a constant expression and if it resolves to true then it’s ignored, if it’s false however, it will output an error and potentially stop.</p>
+
+<p>So I could do this to verify that the size member of my vector is correct</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">using</span> <span class="n">MyVector</span> <span class="o">=</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">Vec</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">,</span><span class="n">Vec</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">,</span><span class="n">Vec</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">,</span><span class="n">Vec</span><span class="o">&lt;</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="o">&gt;&gt;</span><span class="p">;</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="n">MyVector</span><span class="o">::</span><span class="n">Size</span> <span class="o">==</span> <span class="mi">4</span><span class="p">);</span></code></pre></figure>
+
+<p>Thus, if I made an error somewhere, I will immediately know.
+I made a couple of test cases as I was adding various functions.
+The define is because this is all C++14 conformant and the C++14 static_assert version requires a string as second parameter to output in case of failure, in C++17 it is optional. To make my life easier, I made that macro that just put an empty string there for me.</p>
+
+<p>Here’s some part of my tests.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="cp">#define static_assert(...) static_assert(__VA_ARGS__, "")
+</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="n">map</span><span class="o">::</span><span class="n">getFromPos</span><span class="o">&lt;</span><span class="n">Vec</span><span class="o">&lt;</span><span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="o">&gt;&gt;</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="n">map</span><span class="o">::</span><span class="n">getFromPos</span><span class="o">&lt;</span><span class="n">Vec</span><span class="o">&lt;</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="o">&gt;&gt;</span> <span class="o">==</span> <span class="mi">1</span><span class="p">);</span>
+
+<span class="k">static_assert</span><span class="p">(</span><span class="n">map</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span> <span class="o">==</span> <span class="sc">'S'</span><span class="p">);</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="n">map</span><span class="o">::</span><span class="n">getFromPos</span><span class="o">&lt;</span><span class="n">Vec</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="o">&gt;&gt;</span> <span class="o">==</span> <span class="sc">'S'</span><span class="p">);</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="n">map</span><span class="o">::</span><span class="n">getFromPos</span><span class="o">&lt;</span><span class="n">Vec</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">&gt;&gt;</span> <span class="o">==</span> <span class="sc">'E'</span><span class="p">);</span>
+
+<span class="k">static_assert</span><span class="p">(</span><span class="n">map</span><span class="o">::</span><span class="n">find</span><span class="o">&lt;</span><span class="sc">'S'</span><span class="o">&gt;</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">// Start
+</span><span class="k">static_assert</span><span class="p">(</span><span class="n">map</span><span class="o">::</span><span class="n">find</span><span class="o">&lt;</span><span class="sc">'E'</span><span class="o">&gt;</span> <span class="o">==</span> <span class="mi">3</span><span class="o">*</span><span class="mi">8</span> <span class="o">+</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// End
+</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="n">Vec</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">&gt;::</span><span class="n">Index</span><span class="o">&lt;</span><span class="mi">8</span><span class="o">&gt;</span> <span class="o">==</span> <span class="mi">17</span><span class="p">);</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">is_same</span><span class="o">&lt;</span><span class="n">FromIndex</span><span class="o">&lt;</span><span class="mi">8</span><span class="p">,</span> <span class="mi">17</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">Vec</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">&gt;&gt;::</span><span class="n">value</span><span class="p">);</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="n">FromIndex</span><span class="o">&lt;</span><span class="mi">8</span><span class="p">,</span> <span class="mi">17</span><span class="o">&gt;::</span><span class="n">Index</span><span class="o">&lt;</span><span class="mi">8</span><span class="o">&gt;</span> <span class="o">==</span> <span class="mi">17</span><span class="p">);</span>
+
+<span class="k">using</span> <span class="n">TestVec1</span> <span class="o">=</span> <span class="n">VectorFromValue</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="k">using</span> <span class="n">TestVec2</span> <span class="o">=</span> <span class="n">TestVec1</span><span class="o">::</span><span class="n">PushFront</span><span class="o">&lt;</span><span class="mi">6</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">static_assert</span><span class="p">(</span><span class="n">TestVec1</span><span class="o">::</span><span class="n">Get</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;::</span><span class="n">Value</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="n">TestVec1</span><span class="o">::</span><span class="n">Get</span><span class="o">&lt;</span><span class="mi">5</span><span class="o">&gt;::</span><span class="n">Value</span> <span class="o">==</span> <span class="mi">5</span><span class="p">);</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="n">TestVec1</span><span class="o">::</span><span class="n">remove</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">3</span><span class="o">&gt;</span> <span class="o">==</span> <span class="mi">4</span><span class="p">);</span>
+
+<span class="k">static_assert</span><span class="p">(</span><span class="n">TestVec2</span><span class="o">::</span><span class="n">Get</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;::</span><span class="n">Value</span> <span class="o">==</span> <span class="mi">6</span><span class="p">);</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="n">TestVec2</span><span class="o">::</span><span class="n">PopFront</span><span class="o">::</span><span class="n">value</span> <span class="o">==</span> <span class="mi">6</span><span class="p">);</span>
+
+<span class="k">using</span> <span class="n">TestVector4</span> <span class="o">=</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">Test</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">Test</span><span class="o">&lt;-</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">Test</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">Test</span><span class="o">&lt;</span><span class="mi">8</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">Test</span><span class="o">&lt;-</span><span class="mi">1</span><span class="o">&gt;&gt;</span><span class="p">;</span>
+<span class="k">using</span> <span class="n">LeastNode</span> <span class="o">=</span> <span class="n">FindLeast</span><span class="o">&lt;</span><span class="n">TestVector4</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="n">LeastNode</span><span class="o">::</span><span class="n">Index</span> <span class="o">==</span> <span class="mi">1</span><span class="p">);</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="n">LeastNode</span><span class="o">::</span><span class="n">Type</span><span class="o">::</span><span class="n">Cost</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span></code></pre></figure>
+
+<h1 id="the-actual-map">The actual map</h1>
+
+<p>Here’s my map, <code class="highlighter-rouge">0</code> is void, <code class="highlighter-rouge">1</code> is a wall, <code class="highlighter-rouge">S</code> is the start and <code class="highlighter-rouge">E</code> is the end. Note that I used define because if I typed <code class="highlighter-rouge">'S'</code> it would offset the whole row and I really wanted to use <code class="highlighter-rouge">S</code> and not <code class="highlighter-rouge">2</code> or something.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="cp">#define S 'S'
+#define E 'E'
+</span>
+    <span class="k">using</span> <span class="n">map</span> <span class="o">=</span> <span class="n">MapFromValue</span><span class="o">&lt;</span><span class="mi">8</span><span class="p">,</span> <span class="kt">char</span><span class="p">,</span>
+        <span class="n">S</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="o">&gt;</span><span class="p">;</span> 
+
+<span class="cp">#undef S
+#undef E</span></code></pre></figure>
+
+<h1 id="the-final-code">The Final code</h1>
+
+<p>The complete and final code is <a href="https://github.com/lapinozz/CompileTime-Pathfinding/blob/master/main.cpp">available on github</a></p>
+
+<h2 id="its-nice-and-all-that-but-how-do-you-know-it-actually-works">It’s nice and all that but how do you know it actually works?</h2>
+
+<p>Excellent question! As I showed earlier, we can force the compiler to output the final path, then I extract that path using a regex <code class="highlighter-rouge">.*?(Vec&lt;(\d+), (\d+)&gt;).*?</code> and replace with <code class="highlighter-rouge">​{$2,$3}, \n</code> so that</p>
+
+<figure class="highlight"><pre><code class="language-txt" data-lang="txt">668 : &lt;source&gt;:668:21: error: no type named 'Test' in 'Vector&lt;Vec&lt;0, 0&gt;, Vec&lt;1, 0&gt;, Vec&lt;2, 0&gt;, Vec&lt;3, 0&gt;, Vec&lt;4, 0&gt;, Vec&lt;5, 0&gt;, Vec&lt;6, 0&gt;, Vec&lt;7, 0&gt;, Vec&lt;7, 1&gt;, Vec&lt;7, 2&gt;, Vec&lt;7, 3&gt;, Vec&lt;7, 4&gt;, Vec&lt;7, 5&gt;, Vec&lt;7, 6&gt;, Vec&lt;7, 7&gt;, Vec&lt;6, 7&gt;, Vec&lt;5, 7&gt;, Vec&lt;5, 6&gt;, Vec&lt;5, 5&gt;, Vec&lt;5, 4&gt;, Vec&lt;5, 3&gt;, Vec&lt;5, 2&gt;, Vec&lt;4, 2&gt;, Vec&lt;3, 2&gt;, Vec&lt;2, 2&gt;, Vec&lt;2, 3&gt; &gt;'</code></pre></figure>
+
+<p>Becomes</p>
+
+<figure class="highlight"><pre><code class="language-txt" data-lang="txt">{0,0}, 
+{1,0}, 
+{2,0}, 
+{3,0}, 
+{4,0}, 
+{5,0}, 
+{6,0}, 
+{7,0}, 
+{7,1}, 
+{7,2}, 
+{7,3}, 
+{7,4}, 
+{7,5}, 
+{7,6}, 
+{7,7}, 
+{6,7}, 
+{5,7}, 
+{5,6}, 
+{5,5}, 
+{5,4}, 
+{5,3}, 
+{5,2}, 
+{4,2}, 
+{3,2}, 
+{2,2}, 
+{2,3}, </code></pre></figure>
+
+<p>Then I simply paste that into a program that I made which print the map with the a <code class="highlighter-rouge">#</code> at all the aboves positions.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="cp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">//  .*?(Vec&lt;(\d+), (\d+)&gt;).*?
+</span>    <span class="c1">//  {$2,$3}, \n
+</span>
+    <span class="kt">int</span> <span class="n">mapSize</span> <span class="o">=</span> <span class="mi">8</span><span class="p">;</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="p">};</span>
+
+    <span class="k">struct</span> <span class="n">Vec</span>
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">y</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Vec</span><span class="o">&gt;</span> <span class="n">path</span> <span class="o">=</span> 
+    <span class="p">{</span>
+        <span class="c1">// INSERT POSITIONS HERE
+</span>    <span class="p">};</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="kt">char</span><span class="o">&amp;</span> <span class="n">c</span> <span class="o">:</span> <span class="n">map</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="sc">' '</span> <span class="o">:</span> <span class="sc">'#'</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="k">const</span> <span class="n">Vec</span><span class="o">&amp;</span> <span class="n">vec</span> <span class="o">:</span> <span class="n">path</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">map</span><span class="p">[</span><span class="n">vec</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">vec</span><span class="p">.</span><span class="n">y</span><span class="o">*</span><span class="n">mapSize</span><span class="p">]</span> <span class="o">=</span> <span class="sc">'*'</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">map</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">x</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">x</span> <span class="o">%</span> <span class="n">mapSize</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">x</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+            
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">map</span><span class="p">[</span><span class="n">x</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<h1 id="final-output">Final Output</h1>
+
+<p>Finally, I run this program using <a href="cpp.sh">Cpp Shell</a> and it outputs the map and I can see that the path is correct.</p>
+
+<figure class="highlight"><pre><code class="language-txt" data-lang="txt">********
+#######*
+  ****#*
+  *##*#*
+   # *#*
+   # *#*
+ ### *#*
+     ***</code></pre></figure>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>This was pretty fun to write, even thought it can’t really be used in real world code I still learned a lot of tricks that can be useful during real development. I also find it amazing that I was able to write everything on the web, in my web browser, it was really easy and practically pain free.</p>
+
+<p>Thank you for reading I hope you did enjoy.<br />
+As always comments are welcome and appreciated!</p>
+
+  </div>
+
+
+
+<div class="arrowNav">
+ 
+
+
+ 
+<div class="arrowRight" style="float:right">
+<a id="route" class="tooltip-left" href="/learning/2016/11/19/calculator-with-caordboard-and-marbles.html" title="
+&lt;p class=hoveratas&gt;A 4-bit Calculator made in cardboard and marble&lt;/p&gt; &lt;p class=hoverbawah&gt;LOGIC What is it? LOGIC is a fully functional 4-bit...&lt;/p&gt;
+"><i class="typcn typcn-chevron-right" style="    font-size: 30px;
+    position: relative;
+   
+    "></i></a>
+</div>
+
+</div>
+
+
+  <p class="post-meta" style="    background: #00bc8c;
+    padding: 15px 0px 15px 20px;"><time datetime="2017-07-17T18:21:23-04:00" itemprop="datePublished"><i class="typcn typcn-calendar-outline"></i> Jul 17, 2017</time> 
+    |
+  
+  <a href="/tags/#C++" style="color: #fff;"><i class="typcn typcn-tags"></i> C++</a>
+  
+  <a href="/tags/#HUOT" style="color: #fff;"><i class="typcn typcn-tags"></i> HUOT</a>
+  
+  
+  
+
+</article>
+
+
+
+
+
+<style>
+    #disqus_thread {
+  overflow: hidden;
+
+  iframe {
+    margin-bottom: -54px;
+  }
+}
+</style>
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+		this.page.url = 'http://localhost:4000/learning/2017/07/17/compile-time-templated-a-star-pathfinding';
+		this.page.identifier = '/learning/2017/07/17/compile-time-templated-a-star-pathfinding';
+	};
+    
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//theplaceholder.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+</div>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+  <div class="wrapper">
+    <h2 class="footer-heading">Placeholder</h2>
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Lapinozz Thech Blog</li>
+          <li><a href="mailto:monstrefou@gmail.com">monstrefou@gmail.com</a></li>
+        </ul>
+      </div>
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/lapinozz"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">lapinozz</span></a>
+
+          </li>
+          
+          
+          
+
+          
+        </ul>
+      </div>
+      <div class="footer-col footer-col-3">
+        <p>Designed by Spaghetti</p>
+        <p>Proudly hosted by <a href="https://pages.github.com/" target="_blank"><span class="octicon octicon-logo-github" style="color: #828282;
+    position: relative;
+    top: 4px;
+    left: 3px;
+    font-size: 20px;"></span></a></p>
+      </div>
+    </div>
+  </div>
+</footer>
+<!--- Where Javascript Loaded --->
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://iamceege.github.io/tooltipster/js/jquery.tooltipster.js"></script>
+<script>
+$(document).ready(function() {
+	if(location.pathname != "/") {
+		$('.trigger a[href^="/' + location.pathname.split("/")[1] + '"]').addClass('active');
+	} else $('.none a:eq(0)').addClass('active');
+});
+
+</script>
+  <script>
+        $(document).ready(function() {
+            $('.tooltip-right').tooltipster({
+                contentAsHTML: true,
+                position: 'right',
+            });
+        });
+        $(document).ready(function() {
+            $('.tooltip-left').tooltipster({
+                contentAsHTML: true,
+                position: 'left',
+            });
+        });
+
+        document.body.innerHTML = document.body.innerHTML.replace(
+          /\’/gim,
+          '\''
+        );
+    </script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.pjax/1.9.6/jquery.pjax.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+<script type="text/javascript" src="/assets/js/jquery-autocomplete.js"></script>
+<script src="/assets/js/responsive_waterfall.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+<script>
+
+
+$(document).ready(function(){$(".menu-icon").click(function(){$(".trigger").toggle()})}),$(function(){$(document).pjax("#route","body",{fragment:"body",timeout:1e5,scrollTo:0,push:!0,maxCacheLength:20,replace:!1})}),$(document).on("pjax:error",function(e,n,t,o,c){return c.success(n.responseText,t,n),!1});var options={url:"/gblk.json",getValue:"title",list:{match:{enabled:!0,maxNumberOfElements:5}},template:{type:"links",fields:{link:"url"}},theme:"square"};$("#countries").easyAutocomplete(options),Pace.on("start",function(){$(".pacel").show()}),Pace.on("done",function(){$(".pacel").hide()}),$(function(){$("img").lazyload({})});var waterfall=new Waterfall({containerSelector:".wf-container",boxSelector:".wf-box",minBoxWidth:180});$(document).ready(function(){$(".menu-icon").click(function(){$(".trigger").toggle()})});
+       
+</script>
+<script id="dsq-count-scr" src="//theplaceholder.disqus.com/count.js" async></script>
+
+
+  </Body>
+
+</html>

@@ -18,9 +18,10 @@ github_username: lapinozz
 #facebook_username: lapinozz
 
 # Gems
-gems: 
+plugins:
 - jekyll-archives
 - jekyll-paginate
+- jekyll-sitemap
 
 # Config
 paginate: 5

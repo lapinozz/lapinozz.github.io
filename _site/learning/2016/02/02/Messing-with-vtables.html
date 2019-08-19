@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <!---
+  Spaghetti Base Redesign
+  -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Messing with vtables - Part I</title>
+  <meta name="description" content="This is an article about vtable. Even if in practice you should never use them directly, it can be useful to know how they work when considering performance ...">
+  <meta name="google-site-verification" content="WWP0tS0N_Dm8-FTd9oqyZta0oRCDYUFy24R7zSm06Vs" />
+  <meta name="msvalidate.01" content="779064655F047D704FFFD2122C3591F3" />
+  <link rel="stylesheet" href="/assets/css/alternative.css">
+  <link rel="stylesheet" href="/assets/css/syntax.css">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/typicons/2.0.7/typicons.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/octicons/3.4.1/octicons.min.css" rel="stylesheet">
+  <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+  
+  <link rel="canonical" href="http://localhost:4000/learning/2016/02/02/Messing-with-vtables.html">
+  <link rel="alternate" type="application/rss+xml" title="Placeholder" href="http://localhost:4000/feed.xml">
+
+
+<! google analytic >
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-74344870-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+<! strike through >
+<script>
+(function() {
+  function strikethrough(){
+    document.body.innerHTML = document.body.innerHTML.replace(
+      /\~\~(.+?)\~\~/gim,
+      '<del>$1</del>'
+    );
+    
+  }
+  strikethrough();
+})();
+</script>
+
+</head>
+
+
+  <Body>
+
+    <header class="site-header">
+  <div class="wrapper">
+<div class="pacel "><div class="pace-progress" data-progress-text="100%" data-progress="99" style="transform: translate3d(100%, 0px, 0px);">
+  <div class="pace-progress-inner"></div>
+</div>
+<div class="pace-activity"></div></div>
+  <a id="route" class="site-title" href="/">Placeholder<div style="margin: 3px 20px; font-size: 15px; float: right; white-space: pre; display:inline-block">//TODO: F̶i̶n̶d̶ ̶a̶ ̶n̶a̶m̶e̶  delete this todo</div></a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          
+          
+        
+          
+          
+          <a id="route" class="page-link" href="/about.html">About</a>
+          
+          
+        
+          
+          
+          <a id="route" class="page-link" href="/archive.html">Archive</a>
+          
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          
+          <a id="route" class="page-link" href="/project.html">Project</a>
+          
+          
+        
+          
+        
+          
+        
+          
+          
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="http://lapinozz.github.io/feed.xml"> Feeds</a>
+        <a class="page-link" href="http://github.com/lapinozz?tab=repositories"><i class="typico typcn typcn-social-github" style="font-size:"></i> Repositories</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div style="margin: 4.5rem auto;">
+
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="inpost-header">
+    <h1 class="inpost-title" itemprop="name headline">Messing with vtables - Part I</h1>
+    <div style="float:right">
+    <h1>
+     <i class="typico typcn typcn-messages" style="    position: relative;
+    top: 0px;
+    font-size: 25px;"></i> <a class="disqus-comment-count" href="#disqus_thread" data-disqus-identifier="/learning/2016/02/02/Messing-with-vtables" style="color:#fff"> 0</a>
+    </h1>
+    
+  </div>
+    
+   
+    
+
+ 
+ 
+  
+
+    
+    
+    </p>
+  
+  </header>
+  
+  
+  
+  
+  <div class="post-content" itemprop="articleBody">
+    <p>This is an article about <abbr title="virtual table">vtable</abbr>. Even if in practice you should never use them directly, it can be useful to know how they work when considering performance (Especially for virtual inheritance). And well… it’s fun.</p>
+
+<h1 id="disclaimer">Disclaimer</h1>
+<p>Vtabels are not part of the standard, using them manually is absolutly <strong><em>not portable</em></strong>. The only purpose of this code is to <del>have fun</del> learn and understand. Don’t use it for any other purpose</p>
+
+<p>Code tested on</p>
+
+<ul>
+  <li>GCC 5.3 - Ubuntu 14.04</li>
+  <li>Clang 3.7 - Debian GNU/Linux testing (stretch)</li>
+</ul>
+
+<h1 id="vtable-by-example">Vtable by example</h1>
+
+<p>Vtables are used by the compiler to know which virtual function to call or how to access members of virtual inherited class. Let’s see an example.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre></td><td class="code"><pre><span class="k">struct</span> <span class="n">BaseClass</span> 
+<span class="p">{</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">sayHello</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Hello from BaseClass"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="n">ChildClassA</span> <span class="o">:</span> <span class="k">public</span> <span class="n">BaseClass</span>
+<span class="p">{</span>
+    <span class="kt">void</span> <span class="n">sayHello</span><span class="p">()</span> <span class="k">override</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Hello from ChildClassA"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="n">ChildClassB</span> <span class="o">:</span> <span class="k">public</span> <span class="n">BaseClass</span>
+<span class="p">{</span>
+    <span class="kt">void</span> <span class="n">sayHello</span><span class="p">()</span> <span class="k">override</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Hello from ChildClassB"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>Now let’s say we have a <code class="highlighter-rouge">BaseClass*</code>, it could point to either a <code class="highlighter-rouge">BaseClass</code>, a <code class="highlighter-rouge">ChildClassA</code> or a <code class="highlighter-rouge">ChildClassB</code>. But how does the program know which function to call?</p>
+
+<p>It is actually not so complex, in <code class="highlighter-rouge">BaseClass</code> is a hidden pointer to a special struct(the <abbr title="virtual table">vtable</abbr>) containing the addresses of the functions. The <abbr title="virtual table">vtable</abbr> for our <code class="highlighter-rouge">BaseClass</code> would look like this:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="code"><pre><span class="k">struct</span> <span class="n">BaseClass_vtable</span>
+<span class="p">{</span>
+    <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">sayHello_ptr</span><span class="p">)(</span><span class="n">BaseClass</span><span class="o">*</span><span class="p">);</span>
+<span class="p">};</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>That’s it a simple function pointer.
+For those confused by function pointer (let’s be honest, we all are) here is a <a href="http://en.cppreference.com/w/cpp/language/pointer#Pointers_to_functions">link to the cppreference page about them</a></p>
+
+<p>When the object gets constructed it set the function pointer according to the type. If the object is a <code class="highlighter-rouge">BaseClass</code> then it will be pointing to <code class="highlighter-rouge">BaseClass::virtualFuncion</code>, if it is a <code class="highlighter-rouge">ChildClassA</code> then it will be pointing to <code class="highlighter-rouge">ChildClassA::sayHello</code> and so on. Then, When you call the function like this <code class="highlighter-rouge">myBaseClassPtr-&gt;sayHello()</code> it call the function pointed in the <abbr title="virtual table">vtable</abbr>.</p>
+
+<p>The pointer to the <abbr title="virtual table">vtable</abbr>, let’s call it the <abbr title="pointer to virtual table">vptr</abbr> to make it shorter, is located at the base of the class so that you can cast <code class="highlighter-rouge">BaseClass*</code> to <code class="highlighter-rouge">BaseClass_vtable**</code> which would be a pointer to pointer.</p>
+
+<p>Again, all of this is entirely implementation dependent, C++ has no concept of <abbr title="virtual table">vtable</abbr>. The C++ specification only provides specific behaviors that must be guaranteed and this is simply how most compilers implement it.</p>
+
+<p>Here’s what it would look like if you were to do this manually:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="code"><pre><span class="n">BaseClass</span><span class="o">*</span> <span class="n">foo</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ChildClassA</span><span class="p">();</span>
+
+<span class="c1">// cast foo to a pointer to pointer to <abbr title="virtual table">vtable</abbr> then dereference it to get a pointer to <abbr title="virtual table">vtable</abbr>
+</span><span class="n">BaseClass_vtable</span><span class="o">*</span> <span class="n"><abbr title="pointer to virtual table">vptr</abbr></span> <span class="o">=</span> <span class="o">*</span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="n">BaseClass_vtable</span><span class="o">**&gt;</span><span class="p">(</span><span class="n">foo</span><span class="p">);</span>
+
+<span class="c1">//simply call the function pointer
+</span><span class="n"><abbr title="pointer to virtual table">vptr</abbr></span><span class="o">-&gt;</span><span class="n">sayHello_ptr</span><span class="p">(</span><span class="n">foo</span><span class="p">);</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>This output <code class="highlighter-rouge">Hello from ChildClassA</code>.</p>
+
+<p>Now we know how to read the <abbr title="virtual table">vtable</abbr> but can we write to it too? In my test I’ve found that I would get a <abbr title="segmentation fault">segfault</abbr> when trying to set the function pointer. I believe this is because (on GCC at least) the vtables are not created at runtime. They are set at compile time just like a global const and then when constructing an object the <abbr title="pointer to virtual table">vptr</abbr> is set to point to the correct <abbr title="virtual table">vtable</abbr>. This keeps us from editing the already existing <abbr title="virtual table">vtable</abbr> but nothing keeps us from creating our own!</p>
+
+<p>Let’s declare a simple function to inject into our <abbr title="virtual table">vtable</abbr></p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="code"><pre><span class="kt">void</span> <span class="nf">intruderFunction</span><span class="p">(</span><span class="n">BaseClass</span><span class="o">*</span> <span class="n">this_ptr</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Hello from intruder"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>Now to create and insert our own <abbr title="virtual table">vtable</abbr></p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></td><td class="code"><pre><span class="c1">// Create our taget object
+</span><span class="n">BaseClass</span><span class="o">*</span> <span class="n">foo</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BaseClass</span><span class="p">();</span>
+
+<span class="c1">// Create our own <abbr title="virtual table">vtable</abbr>
+</span><span class="n">BaseClass_vtable</span><span class="o">*</span> <span class="n"><abbr title="virtual table">vtable</abbr></span> <span class="o">=</span> <span class="k">new</span> <span class="n">BaseClass_vtable</span><span class="p">();</span>
+
+<span class="c1">// Set the function pointer to point to our function
+</span><span class="n"><abbr title="virtual table">vtable</abbr></span><span class="o">-&gt;</span><span class="n">sayHello_ptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">intruderFunction</span><span class="p">;</span>
+
+<span class="c1">// Set the <abbr title="pointer to virtual table">vptr</abbr> so it point to our <abbr title="virtual table">vtable</abbr>
+</span><span class="o">*</span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="n">BaseClass_vtable</span><span class="o">**&gt;</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span> <span class="o">=</span> <span class="n"><abbr title="virtual table">vtable</abbr></span><span class="p">;</span>
+
+<span class="c1">// Call it!
+</span><span class="n">foo</span><span class="o">-&gt;</span><span class="n">sayHello</span><span class="p">();</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>This output <code class="highlighter-rouge">Hello from intruder</code>.</p>
+
+<p>Naturally, if we have multiple virtual function in the class the <abbr title="virtual table">vtable</abbr> will contain multiple function pointer. From my experience the order of the function pointer is the same as the function definition in the class.</p>
+
+<p>So if we have our <code class="highlighter-rouge">BaseClass</code> like this:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></td><td class="code"><pre><span class="k">struct</span> <span class="n">BaseClass</span> 
+<span class="p">{</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">sayHello</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Hello from BaseClass"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">sayClassName</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"My class name is: BaseClass"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">sayBye</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Bye from BaseClass"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>The <abbr title="virtual table">vtable</abbr> would now look like:</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="code"><pre><span class="k">struct</span> <span class="n">BaseClass_vtable</span>
+<span class="p">{</span>
+    <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">sayHello_ptr</span><span class="p">)(</span><span class="n">BaseClass</span><span class="o">*</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">sayClassName_ptr</span><span class="p">)(</span><span class="n">BaseClass</span><span class="o">*</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">sayBye_ptr</span><span class="p">)(</span><span class="n">BaseClass</span><span class="o">*</span><span class="p">);</span>
+<span class="p">};</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>And we can use and call the function pointer the same way as we did previously.</p>
+
+<p><br />
+<br /></p>
+
+<p>That’s it for part 1! In <a href="http://localhost:4000/learning/2016/02/08/Messing-with-vtables-part-two.html">part 2</a> we’ll look into the more complex subject of virtual inheritance.</p>
+
+
+  </div>
+
+
+
+<div class="arrowNav">
+ 
+ 
+<div class="arrowLeft">
+<a id="route" class="tooltip-right" href="/learning/2016/02/08/Messing-with-vtables-part-two.html" title="
+&lt;p class=hoveratas&gt;Messing with vtables - Part II&lt;/p&gt; &lt;p class=hoverbawah&gt;This second post on vtable will be consecrated to the...&lt;/p&gt;
+"><i class="typcn typcn-chevron-left" style="    font-size: 30px;
+    position: relative;
+   
+    "></i></a>
+</div>
+
+
+
+</div>
+
+
+  <p class="post-meta" style="    background: #00bc8c;
+    padding: 15px 0px 15px 20px;"><time datetime="2016-02-02T21:58:24-05:00" itemprop="datePublished"><i class="typcn typcn-calendar-outline"></i> Feb 2, 2016</time> 
+    |
+  
+  <a href="/tags/#vtable" style="color: #fff;"><i class="typcn typcn-tags"></i> vtable</a>
+  
+  <a href="/tags/#C++" style="color: #fff;"><i class="typcn typcn-tags"></i> C++</a>
+  
+  
+  
+
+</article>
+
+
+
+
+
+<style>
+    #disqus_thread {
+  overflow: hidden;
+
+  iframe {
+    margin-bottom: -54px;
+  }
+}
+</style>
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+		this.page.url = 'http://localhost:4000/learning/2016/02/02/Messing-with-vtables';
+		this.page.identifier = '/learning/2016/02/02/Messing-with-vtables';
+	};
+    
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//theplaceholder.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+</div>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+  <div class="wrapper">
+    <h2 class="footer-heading">Placeholder</h2>
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Lapinozz Thech Blog</li>
+          <li><a href="mailto:monstrefou@gmail.com">monstrefou@gmail.com</a></li>
+        </ul>
+      </div>
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/lapinozz"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">lapinozz</span></a>
+
+          </li>
+          
+          
+          
+
+          
+        </ul>
+      </div>
+      <div class="footer-col footer-col-3">
+        <p>Designed by Spaghetti</p>
+        <p>Proudly hosted by <a href="https://pages.github.com/" target="_blank"><span class="octicon octicon-logo-github" style="color: #828282;
+    position: relative;
+    top: 4px;
+    left: 3px;
+    font-size: 20px;"></span></a></p>
+      </div>
+    </div>
+  </div>
+</footer>
+<!--- Where Javascript Loaded --->
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://iamceege.github.io/tooltipster/js/jquery.tooltipster.js"></script>
+<script>
+$(document).ready(function() {
+	if(location.pathname != "/") {
+		$('.trigger a[href^="/' + location.pathname.split("/")[1] + '"]').addClass('active');
+	} else $('.none a:eq(0)').addClass('active');
+});
+
+</script>
+  <script>
+        $(document).ready(function() {
+            $('.tooltip-right').tooltipster({
+                contentAsHTML: true,
+                position: 'right',
+            });
+        });
+        $(document).ready(function() {
+            $('.tooltip-left').tooltipster({
+                contentAsHTML: true,
+                position: 'left',
+            });
+        });
+
+        document.body.innerHTML = document.body.innerHTML.replace(
+          /\’/gim,
+          '\''
+        );
+    </script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.pjax/1.9.6/jquery.pjax.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+<script type="text/javascript" src="/assets/js/jquery-autocomplete.js"></script>
+<script src="/assets/js/responsive_waterfall.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+<script>
+
+
+$(document).ready(function(){$(".menu-icon").click(function(){$(".trigger").toggle()})}),$(function(){$(document).pjax("#route","body",{fragment:"body",timeout:1e5,scrollTo:0,push:!0,maxCacheLength:20,replace:!1})}),$(document).on("pjax:error",function(e,n,t,o,c){return c.success(n.responseText,t,n),!1});var options={url:"/gblk.json",getValue:"title",list:{match:{enabled:!0,maxNumberOfElements:5}},template:{type:"links",fields:{link:"url"}},theme:"square"};$("#countries").easyAutocomplete(options),Pace.on("start",function(){$(".pacel").show()}),Pace.on("done",function(){$(".pacel").hide()}),$(function(){$("img").lazyload({})});var waterfall=new Waterfall({containerSelector:".wf-container",boxSelector:".wf-box",minBoxWidth:180});$(document).ready(function(){$(".menu-icon").click(function(){$(".trigger").toggle()})});
+       
+</script>
+<script id="dsq-count-scr" src="//theplaceholder.disqus.com/count.js" async></script>
+
+
+  </Body>
+
+</html>
