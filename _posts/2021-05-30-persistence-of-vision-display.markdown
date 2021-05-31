@@ -28,7 +28,7 @@ For this kind of "on the spot" projects I have to do with what is laying around,
 
 I wanted to maximize the ability of my Arduino nano so I went with a resolution of 10 pixel in "height" and 2 colors. I think I chose white and blue for my colors because those leds worked fine with the 5V and didn't need any resistor. Took me quite some time to finish the led board because the leds kept dying, until I realised I was accidentally shorting them when testing.
 
-![image](/assets/image/POV/leds.png){:height="500px"}  
+![image](/assets/image/POV/leds.png)
 
 # Testing and Adjusting
 
@@ -46,5 +46,5 @@ It has a nice radius, I'm pretty happy with the result. As always those kind of 
 
 # Going further
 
-I had started on animations for the display using a pixel art animation editor and a little script to convert the images into binary on/off arrays but I was stretching the limit of the storage available and processing power on my Arduino Nano so it was hard to put more frames but I'm sure I could manage some simple compression which doesn't take too much time. Maybe one day I'll get back to it.
+I had started on animations for the display using a pixel art animation editor and a little script(that [my friend](https://github.com/alexge50) generously made for me) to convert the images into binary on/off arrays but I was stretching the limit of the storage available and processing power on my Arduino Nano so it was hard to put more frames but I'm sure I could manage some simple compression which doesn't take too much time. Maybe one day I'll get back to it.
 
