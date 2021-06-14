@@ -5,6 +5,7 @@ date:   2021-06-13 1:21:23 -0500
 image:
    url: /assets/image/lock/icon.png
 categories: project
+description: How I made a lock that automatically lock and unlocks my door as I leave or approach my home.
 tags:
 - Electronics
 - Arduino
