@@ -5,6 +5,7 @@ date:   2016-11-19 12:37:23 -0500
 image:
    url: /assets/image/LOGIC/logic_name.png
 categories: learning
+description: Might not be the most reliable or useful contraption but it's definitely a fun one.
 tags:
 - Mechanical Computing
 ---

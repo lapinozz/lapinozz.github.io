@@ -5,6 +5,7 @@ date:   2021-05-29 17:21:23 -0500
 image:
    url: /assets/image/ducky/icon.png
 categories: project
+description: That time I pranked my colleague by installing my virus on his computer
 tags:
 - Electronics
 - Arduino

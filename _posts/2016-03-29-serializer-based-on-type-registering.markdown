@@ -5,6 +5,7 @@ date:   2016-03-28 15:36:54 -0500
 image:
    url: http://lapinozz.github.io/assets/image/serializer_post_thumnail.png
 categories: project
+description: A prototype serializer where you register types and their member so you can recursively serialize your objects
 tags:
 - Serializer
 - C++

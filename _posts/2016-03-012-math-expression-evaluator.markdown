@@ -5,6 +5,7 @@ date:   2016-03-12 21:52:28 -0500
 image:
    url: http://lapinozz.github.io/assets/image/code_golf_post_tumbnail.gif
 categories: learning
+description: Writting a simple math expression evaluator in the less amount of characyer possible in C++
 tags:
 - code golf
 - C++

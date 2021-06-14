@@ -5,6 +5,7 @@ date:   2016-03-27 21:56:03 -0500
 image:
    url: http://lapinozz.github.io/assets/image/genetic_algorithm_post_tumbnail.png
 categories: project
+description: AI learns to program.
 tags:
 - Genetic Algorithm
 - C++
@@ -26,6 +27,4 @@ The current code, with the appropriated setting, take about 4 seconds to generat
 
 
 *[IRC]: Internet Relay Chat
-
 [this one]: http://www.primaryobjects.com/2013/01/27/using-artificial-intelligence-to-write-self-modifying-improving-programs/
-

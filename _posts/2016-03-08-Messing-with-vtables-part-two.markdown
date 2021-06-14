@@ -5,6 +5,7 @@ date:   2016-02-08 22:47:08 -0500
 image:
    url: http://lapinozz.github.io/assets/image/vtable_post_tumbnail.gif
 categories: learning
+description: Diving deeper into the common behind-the-scene implementation of inheritance
 tags:
 - vtable
 - C++

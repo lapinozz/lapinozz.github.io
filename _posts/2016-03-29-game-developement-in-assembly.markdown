@@ -5,6 +5,7 @@ date:   2016-03-31 14:41:21 -0500
 image:
    url: http://lapinozz.github.io/assets/image/assembly_post_thumbnail.png
 categories: project
+description: Mostly for fun, even if it does have its advantages and helped me develop some helpful skils
 tags:
 - Assembly
 - Gamedev
@@ -47,5 +48,5 @@ This is a side side project on which i don't work very often. Still, this is one
 [this one]: http://www.primaryobjects.com/2013/01/27/using-artificial-intelligence-to-write-self-modifying-improving-programs/
 
 [livecoding]: livecoding.com
-[on my channel on livecoding]: https://www.livecoding.tv/lapinozz/
+[on my channel on livecoding]: 
 

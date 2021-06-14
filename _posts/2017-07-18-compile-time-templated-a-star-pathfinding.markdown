@@ -5,6 +5,7 @@ date:   2017-07-17 17:21:23 -0500
 image:
    url: /assets/image/hex-maze.png
 categories: learning
+description: My goodbye to template metaprogramming. One last tribute; computing A Star pathfinding algorithm at compile-time
 tags:
 - C++
 - HUOT

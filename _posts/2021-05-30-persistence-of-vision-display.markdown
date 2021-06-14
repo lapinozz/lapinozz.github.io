@@ -5,6 +5,7 @@ date:   2021-05-29 17:21:23 -0500
 image:
    url: /assets/image/POV/icon.png
 categories: project
+description: An Arduino Nano POV Display
 tags:
 - Electronics
 - Arduino

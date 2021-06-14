@@ -5,6 +5,7 @@ date:   2016-04-06 08:22:23 -0500
 image:
    url: http://lapinozz.github.io/assets/image/self_replicating_post_thumbnail.jpeg
 categories: learning
+description: A program that outputs its own source code, preferably without reading a file, is called a Quine. Turns out if you feed it to a IRC bot the right way you can make it loop.
 tags:
 - C++
 - IRC

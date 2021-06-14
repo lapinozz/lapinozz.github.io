@@ -8,6 +8,7 @@ categories: learning
 tags:
 - C++
 - Pathfinding
+description: An useful implementation that can be adapted to any kind of map.
 github: https://github.com/lapinozz/Lazy-Theta-with-optimization-pathfinding
 ---
 

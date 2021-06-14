@@ -9,6 +9,7 @@ tags:
 - C++
 - Networking
 - IRC
+description: Don't try at home, seriously, I got my account banned.
 github: https://github.com/lapinozz/facechat
 ---
 
