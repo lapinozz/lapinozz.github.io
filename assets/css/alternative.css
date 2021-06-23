@@ -699,108 +699,14 @@ ul {
     margin-left: 65px;
     z-index: 0;
 }
-
-.pace-inactive {
-    display: none;
-}
-
-.pacel .pace-progress {
-    z-index: 2000;
-    right: 100%;
-    width: 100%;
-    margin-right: auto;
-    margin-left: auto;
-    padding-right: 30px;
-}
-
-.pacel .pace-progress-inner {
+.pacel > svg {
     display: block;
     position: absolute;
-    right: 0px;
-    width: 100px;
-    height: 100%;
-    box-shadow: 0 0 10px #29d, 0 0 5px #29d;
-    opacity: 1.0;
-    -webkit-transform: rotate(3deg) translate(0px, -4px);
-    -moz-transform: rotate(3deg) translate(0px, -4px);
-    -ms-transform: rotate(3deg) translate(0px, -4px);
-    -o-transform: rotate(3deg) translate(0px, -4px);
-    transform: rotate(3deg) translate(0px, -4px);
-}
-
-.pacel .pace-activity {
-    display: block;
-    position: relative;
     z-index: 2000;
-    top: 20px;
-    left: 37%;
-    width: 14px;
-    height: 14px;
-    border: solid 2px transparent;
-    border-top-color: #fff;
-    /* border-left-color: rgba(255, 255, 255, 0.14); */
-    border-radius: 10px;
-    -webkit-animation: pace-spinner 400ms linear infinite;
-    -moz-animation: pace-spinner 400ms linear infinite;
-    -ms-animation: pace-spinner 400ms linear infinite;
-    -o-animation: pace-spinner 400ms linear infinite;
-    animation: pace-spinner 400ms linear infinite;
-    margin-left: -87px;
-}
-
-@-webkit-keyframes pace-spinner {
-    0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
-}
-
-@-moz-keyframes pace-spinner {
-    0% {
-        -moz-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -moz-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
-}
-
-@-o-keyframes pace-spinner {
-    0% {
-        -o-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -o-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
-}
-
-@-ms-keyframes pace-spinner {
-    0% {
-        -ms-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -ms-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes pace-spinner {
-    0% {
-        transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
+    top: 12px;
+    left: 37%; 
+    margin-left: -100px;
+    background-size: 100% 100%;
 }
 
 .arrowLeft a {
