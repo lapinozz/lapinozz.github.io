@@ -36,6 +36,14 @@
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
   <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}">
 
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tooltipster/4.2.8/js/tooltipster.bundle.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.pjax/1.9.6/jquery.pjax.min.js"></script>
+  <script type="text/javascript" src="/assets/js/jquery-autocomplete.js"></script>
+  <script src="/assets/js/responsive_waterfall.js"></script>
+  <script src="/assets/js/logo.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
 
 <! google analytic >
 <script>
@@ -46,21 +54,6 @@
 
   ga('create', 'UA-74344870-1', 'auto');
   ga('send', 'pageview');
-</script>
-
-
-<! strike through >
-<script>
-(function() {
-  function strikethrough(){
-    document.body.innerHTML = document.body.innerHTML.replace(
-      /\~\~(.+?)\~\~/gim,
-      '<del>$1</del>'
-    );
-    
-  }
-  strikethrough();
-})();
 </script>
 
 </head>

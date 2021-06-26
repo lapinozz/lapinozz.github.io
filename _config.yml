@@ -30,6 +30,9 @@ paginate_path: "page/:num"
 markdown: kramdown
 timezone: Canada/Eastern
 
+kramdown:
+  smart_quotes: ["apos", "apos", "quot", "quot"]
+
 # Archive
 jekyll-archives:
   enabled: []
