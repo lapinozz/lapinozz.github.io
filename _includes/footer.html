@@ -68,6 +68,7 @@ const settings = {
   color: '#ef7800'
 };
 
+$(".pacel svg").remove();
 const svg = Logo.draw(settings);
 const anim = Logo.animate(svg, settings);
 anim.play();
@@ -96,7 +97,6 @@ $(() => {
   $("img").lazyload({})
 
   const menuIcon = $(".menu-icon")[0];
-  console.log(menuIcon)
   menuIcon.addEventListener('click', (e) =>
   {
     e.stopPropagation();
