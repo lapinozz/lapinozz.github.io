@@ -607,12 +607,12 @@ ul {
 .inpost-header {
     background: #00bc8c;
     padding: 15px 20px 20px 20px;
-    height: 30px;
 }
 .inpost-title {
-        font-size: 25px;
+    font-size: 25px;
     letter-spacing: -1px;
-    float: left;
+    margin: 0;
+    position: relative;
 }
 
 .post-title {
@@ -622,6 +622,30 @@ ul {
     color: #fff;
    
 }
+
+.inpost-header-extra
+{    
+    display: inline-block;
+    margin-left: auto;
+    position: absolute;
+    right: 0;
+    font-size: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.inpost-header-extra h1
+{
+    margin-bottom: 0;
+}
+
+@media screen and (max-width: 900px) {
+    .inpost-header-extra
+    {
+        display: none;
+    }
+}
+
 @media screen and (max-width: 800px) {
     .post-title {
         font-size: 24px;
