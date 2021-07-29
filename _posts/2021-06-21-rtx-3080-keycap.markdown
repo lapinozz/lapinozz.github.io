@@ -24,14 +24,14 @@ Fortunately Artillery had a great customer service, they helped me try different
 
 To control the printer I installed Ocotprint on a used Raspberry Pi I found on Marketplace. Using [balena](https://www.balena.io/) to manage the RPI made it super easy to monitor and update the images, I was able to add a [pi-hole](https://pi-hole.net/) instance running on the side to block ADs on the network. Of course I printed a case for the RPI using the printer. In addition, I installed a relay inside the X1 directly in series with the On/Off switch and connected it to the RPI's GPIO pins so that I can turn the printer On/Off from the Octoprint interface.
 
-![image](/assets/image/keycap/rpi.png){:max-height="500px"}  
+![image](/assets/image/keycap/rpi.png){:style="max-height:500px"}  
 
 
 # The Design
 
 When you get a 3D printer you start looking for anything to print, it's very exciting to see things appear before your eyes, it gives you a whole new creative power. I wondered if there was any keycap model to print, I found some, customized them a little to see what could be done. Here's a simple Escape key, I added 4 little holes so you could still see the rgb light of the key.
    
-![image](/assets/image/keycap/esc_key.png){:max-height="500px"}  
+![image](/assets/image/keycap/esc_key.png){:style="max-height:500px"}  
 
 Then I wanted to make one that would be more interesting, I asked my friends for inspiration and one of them sent me an image of a [keycap in the shape of an RTX 3080](https://cdn.thisiswhyimbroke.com/images/rtx-3080-mechanical-keycap.gif), some even had a little fan that you could turn using your finger or by gently blowing on it. This gave me an idea, why not make one with an actual working fan?
 
@@ -54,7 +54,7 @@ It actually took at least twice as many as that.
 
 The fan was surprisingly easy to model and print even though it's quite small. It's hard to remember how small some details are when you do CAD, I spent some time adding bevels and get the shape right just to realize afterwards that they won't really make any difference at this size.
 
-![image](/assets/image/keycap/fan.png){:max-height="500px"} 
+![image](/assets/image/keycap/fan.png){:style="max-height:500px"} 
 
 To turn the fan I needed a really small motor. I used a little [3V vibration module](https://www.amazon.ca/-/fr/gp/product/B01G3R86VI/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1) which I had bought to add haptic feedback to a different project. After removing the case of the module you can see a little rotor with two coils and a weight. Carefully removing the weight leaves you with a mostly balanced rotor that won't vibrate.
 
@@ -71,7 +71,7 @@ Only things left was to fit a battery and a switch. My first instinct was to go 
 
 For the switch I found one in my _miscellaneous parts_ box that just happened to fit perfectly. It wasn't too big, gave barely any resistance when pressed and was just long enough that you don't have to press the key much before it starts making contact.
 
-![image](/assets/image/keycap/switch.png){:max-height="500px"} 
+![image](/assets/image/keycap/switch.png){:style="max-height:500px"} 
 
 For the wiring I simply connected everything in series so the motor would turn when the switch is pressed.
 
@@ -81,6 +81,6 @@ For the wiring I simply connected everything in series so the motor would turn w
 
 The result is a nice golden keycap that fits very nicely and has a fan that turns when you press on the key. Even I was surprised when I got it complete, the whole project sounded a bit crazy when I first started.
 
-![image](/assets/image/keycap/result_image.png){:max-height="500px"} 
+![image](/assets/image/keycap/result_image.png){:style="max-height:500px"} 
 
 ![image](/assets/image/keycap/result.gif){:width="100%"}

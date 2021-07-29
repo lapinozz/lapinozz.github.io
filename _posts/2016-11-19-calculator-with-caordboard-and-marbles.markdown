@@ -31,7 +31,7 @@ I also learned how simple it can be to build logic circuits using simple materia
 
 # What does it look like?
 
-![image](/assets/image/LOGIC/LOGIC-low.jpg){:height="600px"}  
+![image](/assets/image/LOGIC/LOGIC-low.jpg){:style="max-height:600px"}  
 
 
 # Woah, How do you use it?
@@ -40,11 +40,11 @@ You place your input numbers as binary in the inputs, a marble is a one, no marb
 The bit on the right is the least significant bit. You have to reset some part of the calculator before each calculation too.
 Then you remove the little bit of cardboard that kept the marbles from running down and they will slide along the paths, moving and changing the paths as they go, to finally arrive at the outputs at the bottom, giving you the result, as binary again.
 
-![image](/assets/image/LOGIC/LOGIC-IO-low.jpg){:height="600px"}  
+![image](/assets/image/LOGIC/LOGIC-IO-low.jpg){:style="max-height:600px"}  
 
 Here's an example of input if you wanted to add 7 plus 5.
 
-![image](/assets/image/LOGIC/LOGIC-7-plus-5-low.jpg){:height="600px"}  
+![image](/assets/image/LOGIC/LOGIC-7-plus-5-low.jpg){:style="max-height:600px"}  
 
 ## How does it work?
 
@@ -120,7 +120,7 @@ If there is three marbles: make one the fall in the first output and another in 
 
 It was really easy to add the third case to our Half-Adder model, literally only one little piece of cardboard needed to be added. The reason our Full-Adder looks so different is because we edited it to allow for more time between the first and second marble thus lowering the synchronicity requirement.  
 
-![image](/assets/image/LOGIC/Full-Adder-IO-low.jpg){:height="600px"}  
+![image](/assets/image/LOGIC/Full-Adder-IO-low.jpg){:style="max-height:600px"}  
 
 So for one marble it falls in path 1  
 ![image](/assets/image/LOGIC/Full-Adder-1-cropped.gif)  
@@ -148,7 +148,7 @@ Even if each Half-Adder and Full-Adder we made were working properly, once all g
 
 We built two more Full-Adder and the rest are just path so that the marbles go to the correct inputs and outputs!
 
-![image](/assets/image/LOGIC/LOGIC-gates-low.jpg){:height="600px"}  
+![image](/assets/image/LOGIC/LOGIC-gates-low.jpg){:style="max-height:600px"}  
 
 # Conclusion
 

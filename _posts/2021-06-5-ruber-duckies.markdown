@@ -22,13 +22,13 @@ A rubber ducky is a tiny little Arduino-like board that features an Attiny85 chi
 I soldered headers on those for some reason but they usually come without those which gives them a really tight footprint.
 
 ![image](/assets/image/ducky/duckies1.png) 
-![image](/assets/image/ducky/duckies2.png){:width="50%" style="position:relative;left:50%;transform:translateX(-50%)"}    
+![image](/assets/image/ducky/duckies2.png){:style="max-height:360px;position:relative;left:50%;transform:translateX(-50%)"}    
 
 The idea behind those devices is that they can simulate a keyboard, with the ability to send thousands of characters per seconds. Now if you had some nefarious intentions and you managed to either plug this device in an unlocked computer or trick someone in doing so themselves you could easily make it install a virus or extract information. If you are slightly less evil you might also realize that it is the perfect trolling tool.
 
 It also works as a normal Attiny85 so you can control a led or read some switch for example. I toyed with this a little to make one where you could switch which script it would execute. (There used to be two additional switches on this but at some point I stole them for another project)
 
-![image](/assets/image/ducky/switched.png){:height="500px"}  
+![image](/assets/image/ducky/switched.png){:style="max-height:500px"}  
 
 They also come in other form factor, with better chips or a micro sd card reader, etc.
 
@@ -41,7 +41,7 @@ Those devices are great but are quite limited, if you want to type a lot of text
 - Say yes to the admin prompt ("Left Arrow" to select the yes button then "Enter" to confirm)
 - Use a powershell command that will download a script and run it immediately
 
-![image](/assets/image/ducky/explanation.png){:width="50%" style="position:relative;left:50%;transform:translateX(-50%)"}  
+![image](/assets/image/ducky/explanation.png){:style="max-height:720px;position:relative;left:50%;transform:translateX(-50%)"}  
 
 This way you have no limit on the size of the script. I used a combination of [GitHub's gists](https://gist.github.com/) and [TinyUrl](https://tinyurl.com) to both keep the URL short and be able to modify the script as I develop it.
 
