@@ -12,6 +12,7 @@ tags:
 - C++
 - 3D Printing
 - CAD
+github: https://github.com/lapinozz/Type-Registering-Based-Serializer
 ---
 
 # The Monsters
@@ -47,7 +48,7 @@ At the time we had a little litter box furniture, with an empty spot of the same
 - Some sort of mechanism that can measure and dispense the food
 - Some sensor to detect of the food was actually dispensed
 
-The reason I decided to use an Arduino in addition to the ESP is that the location I wanted to put the camera in was a bit far from where the rest of the electronics would be. Also, the ESP32-CAM board I had had a limited number of GPIO available and they can only provide 5V. Most of the parts I already had required 5V.
+The reason I decided to use an Arduino in addition to the ESP is that the location I wanted to put the camera in was a bit far from where the rest of the electronics would be. Also, the ESP32-CAM board I had had a limited number of GPIO available and they can only provide 3.3V. Most of the parts I already had required 5V.
 
 # The Structure
 
