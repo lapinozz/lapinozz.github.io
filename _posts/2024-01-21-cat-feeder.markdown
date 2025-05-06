@@ -46,7 +46,7 @@ At the time we had a little litter box furniture, with an empty spot of the same
 - A webserver running on the ESP for the configuration interface and view the video feed
 - An Arduino Nano for handling controlling the electronics
 - Some sort of mechanism that can measure and dispense the food
-- Some sensor to detect of the food was actually dispensed
+- Some sensor to detect if the food was actually dispensed
 
 The reason I decided to use an Arduino in addition to the ESP is that the location I wanted to put the camera in was a bit far from where the rest of the electronics would be. Also, the ESP32-CAM board I had had a limited number of GPIO available and they can only provide 3.3V. Most of the parts I already had required 5V.
 
