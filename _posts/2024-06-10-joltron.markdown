@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Joltron, a very shocking game"
-date:   2023-01-28 09:43:32 -0500
+date:   2025-05-16 09:43:32 -0500
 image:
    url: /assets/image/catFeeder/icon.png
 categories: project
