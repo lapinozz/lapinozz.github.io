@@ -1,9 +1,9 @@
 ---
 layout: post
 title:  "Joltron, a very shocking game"
-date:   2025-05-16 09:43:32 -0500
+date:   2025-05-14 09:43:32 -0500
 image:
-   url: /assets/image/catFeeder/icon.png
+   url: /assets/image/joltron/icon.png
 categories: project
 description: Re-making an existing game, but more better
 tags:
