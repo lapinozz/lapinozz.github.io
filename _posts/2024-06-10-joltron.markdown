@@ -1,0 +1,75 @@
+---
+layout: post
+title:  "Joltron, a very shocking game"
+date:   2023-01-28 09:43:32 -0500
+image:
+   url: /assets/image/catFeeder/icon.png
+categories: project
+description: Re-making an existing game, but more better
+tags:
+- Electronics
+- Arduino
+- C++
+- 3D Printing
+- CAD
+github: https://github.com/lapinozz/joltron
+---
+
+# The Concept
+
+I don't remember how I stumbled on it but there's a party game where 4 players each hold a little handle with a button on it, there's a music playing, when the music stop the last player to press the button gets a shock. As soon as I saw that game I knew I had to make my own version. 
+
+# The Shock
+ 
+I immediately thought of the cheap high-voltage modules you can get on Aliexpress/Amazon. I had briefly experimented with them in the past and it seemed like I had finally found a "practical" application for them. They usually take in 3 to 6 volts and are often advertised with an output of 400Kv or something ridiculous like that, they actually output in the range of 10Kv to 20Kv. That's still enough to produce electric arc a couple of centimeters long. That might sound scarry but the current is very low and depending on the specific module the shock can range from a little pinch to a full arm numbness.
+
+![image](/assets/image/joltron/hv-module.png){:style="max-height:500px"}
+
+
+# The Game(s)
+
+At this point I knew I wanted to have a similar reaction-time game, but I also wanted more, I was looking for way to push the concept further. The idea that came to me was to make different minigames the players could compete in. The first game that would fit the format that came to my mind was the good old classic pong! 
+
+![image](/assets/image/joltron/pong.webp){:style="max-height:500px"}
+
+I also had a couple of little 128x64 OLED display that I really wanted to use. I planned to use at least one for menu screen but I was also looking very hard for an excuse to give one screen to each player. After much thinking I came up with a concept that did require players to have their own individual screens, a social game of voting and betrayal! Each player would vote for someone, the person with the most votes would loose and get the shock, _unless_ they got all the votes, in that case the other players would get the shock.
+
+![image](/assets/image/joltron/menu.png){:style="max-height:500px"}
+
+The fourth game is a more complicated version of the reaction game, where player have to wait for multiple "conditions" to be fulfilled, the conditions being if the song is playing or not, how many leds of a certain color there is and how many of a certain shape there is on the main screen.
+
+# The Electronics
+
+As usual, I reached for the tursty Arduino Nano which is cheap and compact to be the brain of this project.  
+The 5 lcd screens are connected via I2C but they all share the same address so I connected them to a TCA9548A multi-channel expension board which lets me enable or disable channels from code. This way I can control which screen I'm sending data to, or even send the same data to multiple screens at the same time.  
+For playing music and sounds I selected a DFPlayer Mini, it's a little board with a MicroSD card slot that can play MP3 and be controlled from code.
+If I remember correctly, the speaker was scavenged from an old laptop.
+The whole thing is powered from a single 18650 lithium battery and a tp4056 charge/discharge board plus a XL6009 step-up booster to raise the voltage to 5V.
+There's also 3 push buttons on top to go through the menues and 10 addressable LEDs around them.
+
+![image](/assets/image/joltron/inside2.png){:style="max-height:500px"}
+![image](/assets/image/joltron/inside.png){:style="max-height:500px"}
+
+The original plan was to have a single high voltage module and to physically switch which remote it was connected to by rotating a servo with a series of connector. But that would probably have been unreliable, fragile and bulky. Instead I opted to put a taser module in each handle. That made more sense then trying to route 20kv inside the body of the game and through long wires.
+
+![image](/assets/image/joltron/handle.png){:style="max-height:500px"}
+![image](/assets/image/joltron/handle2.png){:style="max-height:500px"}
+
+The handles are made with a simple push button on the top, aluminum foils glued to pieces that come out on each side and connectes to the high voltage module. These are large to ensure you will always make contact with both sides when you hold the hanlde, ensure you do get shocked if you loose. They connect to the body of the game through audio jacks so that if someone pulls their arm in surprise the handle can easily disconnect rather than tear the or break the wires.
+
+# The Interference
+
+I tested multiple times to make sure the mosfets I selected could trigger and the high voltage modules and hat I could control them from the arduino, everything seemed to worked perfectly. But once I assembled it into a handle, every time I tried to trigger an arc from the code, the Arduino would just crash or freeze. At first I thought the modules were pulling too much current or injected noise on the ground or power rails but adding capacitors didn't seem to help. I then tried to inspect the circuit at various points using my oscilloscope but I couldn't find any voltage peak or drop like I would have expected. I thought maybe since it produced electric arcs multiple centimeters long there might have been enough EM radiation to mess with the microcontroller, but no amount of shielding or keeping it far from the arc solved the problem.
+
+In the end it turned out to be current induced into the wires for the button, which were running right next to the arc. The fix was simple, I just twisted that wire pair and the problem went away!
+
+# The Playing
+
+The game turned out great, knowing you might get a shock if you lose really raises the stakes even if the games are relatively simple. The game also keeps track of each player's score and displays a scoreboard in between each game.
+
+![image](/assets/image/joltron/scoreboard.png){:style="max-height:500px"}
+
+Convincing people to play is not always easy, especially after they hear the crackling of an electric arc, which can be quite loud! But in the end it's more scary than dangerous and when they do endup getting a shock people are generally relieved that it's not too bad and willing to continue playing. Although some people have higher or lower skin resistance and that means you can have one person that barely feels anything when they get the shock playing against someone that gets a more significant jolt, not the most fair situation but still a lot of fun!
+
+![image](/assets/image/joltron/joltron.png){:style="max-height:500px"}
+![image](/assets/image/joltron/playing.webp){:style="max-height:500px"}
