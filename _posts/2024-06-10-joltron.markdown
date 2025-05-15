@@ -17,11 +17,11 @@ github: https://github.com/lapinozz/joltron
 
 # The Concept
 
-I don't remember how I stumbled on it but there's a party game where 4 players each hold a little handle with a button on it, there's a music playing, when the music stop the last player to press the button gets a shock. As soon as I saw that game I knew I had to make my own version. 
+I don't remember how I stumbled on it, but there's a party game where 4 players each hold a little handle with a button on it, there's a music playing, when the music stops the last player to press the button gets a shock. As soon as I saw that game I knew I had to make my own version. 
 
 # The Shock
  
-I immediately thought of the cheap high-voltage modules you can get on Aliexpress/Amazon. I had briefly experimented with them in the past and it seemed like I had finally found a "practical" application for them. They usually take in 3 to 6 volts and are often advertised with an output of 400Kv or something ridiculous like that, they actually output in the range of 10Kv to 20Kv. That's still enough to produce electric arc a couple of centimeters long. That might sound scarry but the current is very low and depending on the specific module the shock can range from a little pinch to a full arm numbness.
+I immediately thought of the cheap high-voltage modules you can get on AliExpress/Amazon. I had briefly experimented with them in the past and it seemed like I had finally found a "practical" application for them. They usually take in 3 to 6 volts and are often advertised with an output of 400Kv or something ridiculous like that, they actually output in the range of 10Kv to 20Kv. That's still enough to produce electric arc a couple of centimeters long. That might sound scary but the current is very low and depending on the specific module the shock can range from a little pinch to a full arm numbness.
 
 ![image](/assets/image/joltron/hv-module.png){:style="max-height:500px"}
 
@@ -40,22 +40,22 @@ The fourth game is a more complicated version of the reaction game, where player
 
 # The Electronics
 
-As usual, I reached for the tursty Arduino Nano which is cheap and compact to be the brain of this project.  
-The 5 lcd screens are connected via I2C but they all share the same address so I connected them to a TCA9548A multi-channel expension board which lets me enable or disable channels from code. This way I can control which screen I'm sending data to, or even send the same data to multiple screens at the same time.  
+As usual, I reached for the trusty Arduino Nano which is cheap and compact to be the brain of this project.  
+The 5 lcd screens are connected via I2C but they all share the same address so I connected them to a TCA9548A multi-channel expansion board which lets me enable or disable channels from code. This way I can control which screen I'm sending data to, or even send the same data to multiple screens at the same time.  
 For playing music and sounds I selected a DFPlayer Mini, it's a little board with a MicroSD card slot that can play MP3 and be controlled from code.
 If I remember correctly, the speaker was scavenged from an old laptop.
 The whole thing is powered from a single 18650 lithium battery and a tp4056 charge/discharge board plus a XL6009 step-up booster to raise the voltage to 5V.
-There's also 3 push buttons on top to go through the menues and 10 addressable LEDs around them.
+There's also 3 push buttons on top to go through the menus and 10 addressable LEDs around them.
 
 ![image](/assets/image/joltron/inside2.png){:style="max-height:500px"}
 ![image](/assets/image/joltron/inside.png){:style="max-height:500px"}
 
-The original plan was to have a single high voltage module and to physically switch which remote it was connected to by rotating a servo with a series of connector. But that would probably have been unreliable, fragile and bulky. Instead I opted to put a taser module in each handle. That made more sense then trying to route 20kv inside the body of the game and through long wires.
+The original plan was to have a single high voltage module and to physically switch which remote it was connected to by rotating a servo with a series of connector. But that would probably have been unreliable, fragile and bulky. Instead I opted to put a taser module in each handle. That made more sense than trying to route 20kv inside the body of the game and through long wires.
 
 ![image](/assets/image/joltron/handle.png){:style="max-height:500px"}
 ![image](/assets/image/joltron/handle2.png){:style="max-height:500px"}
 
-The handles are made with a simple push button on the top, aluminum foils glued to pieces that come out on each side and connectes to the high voltage module. These are large to ensure you will always make contact with both sides when you hold the hanlde, ensure you do get shocked if you loose. They connect to the body of the game through audio jacks so that if someone pulls their arm in surprise the handle can easily disconnect rather than tear the or break the wires.
+The handles are made with a simple push button on the top, aluminum foils glued to pieces that come out on each side and connects to the high voltage module. These are large to ensure you will always make contact with both sides when you hold the handle, ensure you do get shocked if you lose. They connect to the body of the game through audio jacks so that if someone pulls their arm in surprise the handle can easily disconnect rather than tear or break the wires.
 
 # The Interference
 
